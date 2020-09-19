@@ -33,12 +33,13 @@ The GDP data we will look at is from the United Nations’ National Accounts Mai
     </item>
     
     <item>
-      <title>Trump&#39;s Approval Margins</title>
+      <title>Trump approval rate changes</title>
       <link>/blogs/blog7/</link>
       <pubDate>Mon, 07 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>/blogs/blog7/</guid>
-      <description>Trump’s Approval MarginsAs we saw in class, fivethirtyeight.com has detailed data on all polls that track the president’s approval
+      <description>Trump’s Approval MarginsBy looking at Trump’s Approval Margins over time, we can probably figure out the pattern of his approval rate change.
+Let’s see from the past!
 # Import approval polls dataapproval_polllist &amp;lt;- read_csv(here::here(&amp;#39;data&amp;#39;, &amp;#39;approval_polllist.csv&amp;#39;))# or directly off fivethirtyeight website# approval_polllist &amp;lt;- read_csv(&amp;#39;https://projects.fivethirtyeight.com/trump-approval-data/approval_polllist.csv&amp;#39;)First of all, we glimpse at the data to gain an understanding of the data set.
 #take a look at the original dataglimpse(approval_polllist)## Rows: 14,533## Columns: 22## $ president &amp;lt;chr&amp;gt; &amp;quot;Donald Trump&amp;quot;, &amp;quot;Donald Trump&amp;quot;, &amp;quot;Donald Trump&amp;quot;,.</description>
     </item>
