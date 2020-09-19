@@ -1,0 +1,167 @@
+---
+categories:
+- ""
+- ""
+date: '2020-09-07'
+description: What is Trump's approval rate change over time? 
+draft: false
+image: pic03.jpg
+keywords: ""
+slug: blog7
+title: Trump approval rate changes
+---
+---
+
+
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center"
+)
+```
+
+
+```{r load-libraries, include=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(here)
+library(skimr)
+library(janitor)
+library(httr)
+library(readxl)
+library(vroom)
+library(wbstats)
+```
+
+
+
+
+# Trump's Approval Margins
+
+By looking at Trump's Approval Margins over time, we can probably figure out the pattern of his approval rate change.
+
+Let's see from the past!
+
+```{r, cache=TRUE}
+# Import approval polls data
+approval_polllist <- read_csv(here::here('data', 'approval_polllist.csv'))
+
+# or directly off fivethirtyeight website
+# approval_polllist <- read_csv('https://projects.fivethirtyeight.com/trump-approval-data/approval_polllist.csv')
+
+```
+First of all, we glimpse at the data to gain an understanding of the data set.
+```{r, original data}
+#take a look at the original data
+glimpse(approval_polllist)
+#found dates in character form
+```
+We found that the dates are in the form of "character", so we change the form using the "lubridate" dataset. Then, we check the revised data again.
+
+```{r, loading libraries}
+#explicitly load lubridate library
+library(lubridate) 
+
+#convert character to date
+approval_polllist$modeldate <- mdy(approval_polllist$modeldate) 
+approval_polllist$startdate <- mdy(approval_polllist$startdate)  
+approval_polllist$enddate <- mdy(approval_polllist$enddate) 
+approval_polllist$createddate <- mdy(approval_polllist$createddate)
+approval_polllist$timestamp <- parse_date_time(approval_polllist$timestamp, orders = "hms dmy")
+
+#check the revised data
+glimpse(approval_polllist) 
+```
+
+## Create a plot
+
+First, calculate the average net approval rate (approve- disapprove) for each week since he got into office. I want you plot the net approval, along with its 95% confidence interval. There are various dates given for each poll, please use `enddate`, i.e., the date the poll ended.
+
+we selected the required variables and calculated the average net approval rate by week from 2017 to 2020 and its 95% confidence interval using mathematical formula. 
+
+Then we generate the weekly average net approval rate plot and save it in the right proportion.
+```{r trump_margins, out.width="100%"}
+avg_per_week <- approval_polllist %>% 
+#We want the figures for those really did vote
+  filter(subgroup == "Voters") %>%  
+#select the required columns for further analysis
+  select(enddate, approve, disapprove) %>% 
+  mutate(net_approval_rate = approve - disapprove, 
+         week = epiweek(enddate), # use lubridate for week count
+         year = epiyear(enddate)) %>%  #use lubridate to specify year
+  group_by(year, week) %>%  
+  summarise(avg_net_approval_rate = mean(net_approval_rate), #calculate the mean
+            SD = sd(net_approval_rate),
+            count = n(),
+            SE = SD /sqrt(count),
+#We use t-distribution formula here for ci calculation
+            t_critical = qt(0.975, count -1),
+            ci_lower = avg_net_approval_rate - t_critical*SE, #calculate the confidence interval using formula
+            ci_upper = avg_net_approval_rate + t_critical*SE) 
+
+weekly_avg_poll <- ggplot(data = avg_per_week, aes(x = week))+
+#draw the average net approval rate scatter plot
+                    geom_point(aes(y = avg_net_approval_rate, color = factor(year)))+ 
+#connect the dots
+                    geom_line(aes(y = avg_net_approval_rate, color = factor(year)))+
+#show the confidence interval around the dots
+                    geom_ribbon(aes(ymin = ci_lower, ymax = ci_upper, fill = factor(year), color = factor(year)), alpha = 0.3, linetype = 1)+
+#manually fill in colors 
+                    scale_fill_manual(values = c("#fbb4ae", "#c2e699", "#b2e2e2", "#d7b5d8"))+
+                    scale_color_manual(values = c("#fbb4ae", "#c2e699", "#b2e2e2", "#d7b5d8"))+
+                    facet_wrap(~year)+  
+                    labs(title = "Estimating Net Approval (approve - disapprove) for Donald Trump",
+                         subtitle = "Weekly average of all polls",
+                         x = "Week of the year",
+                         y = "Average Net Approval(%)")+
+#set breaks for x and y axis
+                    scale_x_continuous(breaks = seq(0, 52, 13))+ 
+                    scale_y_continuous(breaks = seq(-20.0, 7.5, 2.5), limits = c(-20.0, 7.5))+
+                    theme_bw()+
+#add an orange line at zero
+                    geom_hline(yintercept = 0, color = "orange")+
+#remove all legends since they are unnecessary
+                    theme(legend.position = "none")+
+                    NULL
+weekly_avg_poll
+
+# save the picture in the right proportion
+ggsave("weekly_avg_poll.jpg",plot = weekly_avg_poll, width = 9,height = 4, path = here::here("plotted images"))
+# print saved plots
+knitr::include_graphics(here::here("plotted images", "weekly_avg_poll.jpg"))
+
+```
+
+## Compare Confidence Intervals
+
+Compare the confidence intervals for `week 15` (6-12 April 2020) and `week 34` (17-23 August 2020). Can you explain what's going on? One paragraph would be enough.
+
+We can see from the table below that the confidence interval at 'week 34' is 4.85 larger than 'week 15'.This is because the confidence interval lower limit in 'week 34' is 5.16 lower than 'week 15', although their upper limits are quite close. This can be traced back to the difference between the standard deviation figures(delta = 8.10 - 3.12 =  4.98). However, there exists inaccuracy, especially when the count for 'week 34' is only 22 and this strengens the result of a bigger standard error. This means that the interval that would capture the true average net approval rate of Trump is wider in 'week 34', in other word, voters have hugely deviated opinions regarding whether they want to approve Trump in 'week 34'. The high variability in week 34 may be due to changes in coronavirus crisis. 
+
+
+
+```{r trump_margins 2, out.width="100%"}
+library(kableExtra)
+
+#print a table of all related variables for further comparison
+avg_per_week_15_34 <- avg_per_week %>% 
+  filter(year == 2020 & week %in% c(15,34)) %>% 
+  mutate(ci = ci_upper - ci_lower) 
+
+kbl(avg_per_week_15_34) %>% 
+  kable_styling(full_width = F) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+```
+
+

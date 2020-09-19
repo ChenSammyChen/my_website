@@ -1,0 +1,265 @@
+---
+categories:
+- ""
+- ""
+date: '2020-09-07'
+description: What is Trump's approval rate change over time? 
+draft: false
+image: pic03.jpg
+keywords: ""
+slug: blog7
+title: Trump approval rate changes
+---
+
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+<link href="/rmarkdown-libs/lightable/lightable.css" rel="stylesheet" />
+
+
+<hr />
+<div id="trumps-approval-margins" class="section level1">
+<h1>Trump’s Approval Margins</h1>
+<p>By looking at Trump’s Approval Margins over time, we can probably figure out the pattern of his approval rate change.</p>
+<p>Let’s see from the past!</p>
+<pre class="r"><code># Import approval polls data
+approval_polllist &lt;- read_csv(here::here(&#39;data&#39;, &#39;approval_polllist.csv&#39;))
+
+# or directly off fivethirtyeight website
+# approval_polllist &lt;- read_csv(&#39;https://projects.fivethirtyeight.com/trump-approval-data/approval_polllist.csv&#39;)</code></pre>
+<p>First of all, we glimpse at the data to gain an understanding of the data set.</p>
+<pre class="r"><code>#take a look at the original data
+glimpse(approval_polllist)</code></pre>
+<pre><code>## Rows: 14,533
+## Columns: 22
+## $ president           &lt;chr&gt; &quot;Donald Trump&quot;, &quot;Donald Trump&quot;, &quot;Donald Trump&quot;,...
+## $ subgroup            &lt;chr&gt; &quot;All polls&quot;, &quot;All polls&quot;, &quot;All polls&quot;, &quot;All pol...
+## $ modeldate           &lt;chr&gt; &quot;8/29/2020&quot;, &quot;8/29/2020&quot;, &quot;8/29/2020&quot;, &quot;8/29/20...
+## $ startdate           &lt;chr&gt; &quot;1/20/2017&quot;, &quot;1/20/2017&quot;, &quot;1/20/2017&quot;, &quot;1/21/20...
+## $ enddate             &lt;chr&gt; &quot;1/22/2017&quot;, &quot;1/22/2017&quot;, &quot;1/24/2017&quot;, &quot;1/23/20...
+## $ pollster            &lt;chr&gt; &quot;Gallup&quot;, &quot;Morning Consult&quot;, &quot;Ipsos&quot;, &quot;Gallup&quot;,...
+## $ grade               &lt;chr&gt; &quot;B&quot;, &quot;B/C&quot;, &quot;B-&quot;, &quot;B&quot;, &quot;B&quot;, &quot;C+&quot;, &quot;B-&quot;, &quot;B+&quot;, &quot;...
+## $ samplesize          &lt;dbl&gt; 1500, 1992, 1632, 1500, 1500, 1500, 1651, 1190,...
+## $ population          &lt;chr&gt; &quot;a&quot;, &quot;rv&quot;, &quot;a&quot;, &quot;a&quot;, &quot;a&quot;, &quot;lv&quot;, &quot;a&quot;, &quot;rv&quot;, &quot;a&quot;,...
+## $ weight              &lt;dbl&gt; 0.262, 0.680, 0.153, 0.243, 0.227, 0.200, 0.142...
+## $ influence           &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+## $ approve             &lt;dbl&gt; 45.0, 46.0, 42.1, 45.0, 46.0, 57.0, 42.3, 36.0,...
+## $ disapprove          &lt;dbl&gt; 45.0, 37.0, 45.2, 46.0, 45.0, 43.0, 45.8, 44.0,...
+## $ adjusted_approve    &lt;dbl&gt; 45.8, 45.3, 43.2, 45.8, 46.8, 51.6, 43.4, 37.7,...
+## $ adjusted_disapprove &lt;dbl&gt; 43.6, 37.8, 43.9, 44.6, 43.6, 44.4, 44.5, 42.8,...
+## $ multiversions       &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,...
+## $ tracking            &lt;lgl&gt; TRUE, NA, TRUE, TRUE, TRUE, TRUE, TRUE, NA, NA,...
+## $ url                 &lt;chr&gt; &quot;http://www.gallup.com/poll/201617/gallup-daily...
+## $ poll_id             &lt;dbl&gt; 49253, 49249, 49426, 49262, 49236, 49266, 49425...
+## $ question_id         &lt;dbl&gt; 77265, 77261, 77599, 77274, 77248, 77278, 77598...
+## $ createddate         &lt;chr&gt; &quot;1/23/2017&quot;, &quot;1/23/2017&quot;, &quot;3/1/2017&quot;, &quot;1/24/201...
+## $ timestamp           &lt;chr&gt; &quot;13:38:37 29 Aug 2020&quot;, &quot;13:38:37 29 Aug 2020&quot;,...</code></pre>
+<pre class="r"><code>#found dates in character form</code></pre>
+<p>We found that the dates are in the form of “character”, so we change the form using the “lubridate” dataset. Then, we check the revised data again.</p>
+<pre class="r"><code>#explicitly load lubridate library
+library(lubridate) 
+
+#convert character to date
+approval_polllist$modeldate &lt;- mdy(approval_polllist$modeldate) 
+approval_polllist$startdate &lt;- mdy(approval_polllist$startdate)  
+approval_polllist$enddate &lt;- mdy(approval_polllist$enddate) 
+approval_polllist$createddate &lt;- mdy(approval_polllist$createddate)
+approval_polllist$timestamp &lt;- parse_date_time(approval_polllist$timestamp, orders = &quot;hms dmy&quot;)
+
+#check the revised data
+glimpse(approval_polllist) </code></pre>
+<pre><code>## Rows: 14,533
+## Columns: 22
+## $ president           &lt;chr&gt; &quot;Donald Trump&quot;, &quot;Donald Trump&quot;, &quot;Donald Trump&quot;,...
+## $ subgroup            &lt;chr&gt; &quot;All polls&quot;, &quot;All polls&quot;, &quot;All polls&quot;, &quot;All pol...
+## $ modeldate           &lt;date&gt; 2020-08-29, 2020-08-29, 2020-08-29, 2020-08-29...
+## $ startdate           &lt;date&gt; 2017-01-20, 2017-01-20, 2017-01-20, 2017-01-21...
+## $ enddate             &lt;date&gt; 2017-01-22, 2017-01-22, 2017-01-24, 2017-01-23...
+## $ pollster            &lt;chr&gt; &quot;Gallup&quot;, &quot;Morning Consult&quot;, &quot;Ipsos&quot;, &quot;Gallup&quot;,...
+## $ grade               &lt;chr&gt; &quot;B&quot;, &quot;B/C&quot;, &quot;B-&quot;, &quot;B&quot;, &quot;B&quot;, &quot;C+&quot;, &quot;B-&quot;, &quot;B+&quot;, &quot;...
+## $ samplesize          &lt;dbl&gt; 1500, 1992, 1632, 1500, 1500, 1500, 1651, 1190,...
+## $ population          &lt;chr&gt; &quot;a&quot;, &quot;rv&quot;, &quot;a&quot;, &quot;a&quot;, &quot;a&quot;, &quot;lv&quot;, &quot;a&quot;, &quot;rv&quot;, &quot;a&quot;,...
+## $ weight              &lt;dbl&gt; 0.262, 0.680, 0.153, 0.243, 0.227, 0.200, 0.142...
+## $ influence           &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+## $ approve             &lt;dbl&gt; 45.0, 46.0, 42.1, 45.0, 46.0, 57.0, 42.3, 36.0,...
+## $ disapprove          &lt;dbl&gt; 45.0, 37.0, 45.2, 46.0, 45.0, 43.0, 45.8, 44.0,...
+## $ adjusted_approve    &lt;dbl&gt; 45.8, 45.3, 43.2, 45.8, 46.8, 51.6, 43.4, 37.7,...
+## $ adjusted_disapprove &lt;dbl&gt; 43.6, 37.8, 43.9, 44.6, 43.6, 44.4, 44.5, 42.8,...
+## $ multiversions       &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,...
+## $ tracking            &lt;lgl&gt; TRUE, NA, TRUE, TRUE, TRUE, TRUE, TRUE, NA, NA,...
+## $ url                 &lt;chr&gt; &quot;http://www.gallup.com/poll/201617/gallup-daily...
+## $ poll_id             &lt;dbl&gt; 49253, 49249, 49426, 49262, 49236, 49266, 49425...
+## $ question_id         &lt;dbl&gt; 77265, 77261, 77599, 77274, 77248, 77278, 77598...
+## $ createddate         &lt;date&gt; 2017-01-23, 2017-01-23, 2017-03-01, 2017-01-24...
+## $ timestamp           &lt;dttm&gt; 2020-08-29 13:38:37, 2020-08-29 13:38:37, 2020...</code></pre>
+<div id="create-a-plot" class="section level2">
+<h2>Create a plot</h2>
+<p>First, calculate the average net approval rate (approve- disapprove) for each week since he got into office. I want you plot the net approval, along with its 95% confidence interval. There are various dates given for each poll, please use <code>enddate</code>, i.e., the date the poll ended.</p>
+<p>we selected the required variables and calculated the average net approval rate by week from 2017 to 2020 and its 95% confidence interval using mathematical formula.</p>
+<p>Then we generate the weekly average net approval rate plot and save it in the right proportion.</p>
+<pre class="r"><code>avg_per_week &lt;- approval_polllist %&gt;% 
+#We want the figures for those really did vote
+  filter(subgroup == &quot;Voters&quot;) %&gt;%  
+#select the required columns for further analysis
+  select(enddate, approve, disapprove) %&gt;% 
+  mutate(net_approval_rate = approve - disapprove, 
+         week = epiweek(enddate), # use lubridate for week count
+         year = epiyear(enddate)) %&gt;%  #use lubridate to specify year
+  group_by(year, week) %&gt;%  
+  summarise(avg_net_approval_rate = mean(net_approval_rate), #calculate the mean
+            SD = sd(net_approval_rate),
+            count = n(),
+            SE = SD /sqrt(count),
+#We use t-distribution formula here for ci calculation
+            t_critical = qt(0.975, count -1),
+            ci_lower = avg_net_approval_rate - t_critical*SE, #calculate the confidence interval using formula
+            ci_upper = avg_net_approval_rate + t_critical*SE) 
+
+weekly_avg_poll &lt;- ggplot(data = avg_per_week, aes(x = week))+
+#draw the average net approval rate scatter plot
+                    geom_point(aes(y = avg_net_approval_rate, color = factor(year)))+ 
+#connect the dots
+                    geom_line(aes(y = avg_net_approval_rate, color = factor(year)))+
+#show the confidence interval around the dots
+                    geom_ribbon(aes(ymin = ci_lower, ymax = ci_upper, fill = factor(year), color = factor(year)), alpha = 0.3, linetype = 1)+
+#manually fill in colors 
+                    scale_fill_manual(values = c(&quot;#fbb4ae&quot;, &quot;#c2e699&quot;, &quot;#b2e2e2&quot;, &quot;#d7b5d8&quot;))+
+                    scale_color_manual(values = c(&quot;#fbb4ae&quot;, &quot;#c2e699&quot;, &quot;#b2e2e2&quot;, &quot;#d7b5d8&quot;))+
+                    facet_wrap(~year)+  
+                    labs(title = &quot;Estimating Net Approval (approve - disapprove) for Donald Trump&quot;,
+                         subtitle = &quot;Weekly average of all polls&quot;,
+                         x = &quot;Week of the year&quot;,
+                         y = &quot;Average Net Approval(%)&quot;)+
+#set breaks for x and y axis
+                    scale_x_continuous(breaks = seq(0, 52, 13))+ 
+                    scale_y_continuous(breaks = seq(-20.0, 7.5, 2.5), limits = c(-20.0, 7.5))+
+                    theme_bw()+
+#add an orange line at zero
+                    geom_hline(yintercept = 0, color = &quot;orange&quot;)+
+#remove all legends since they are unnecessary
+                    theme(legend.position = &quot;none&quot;)+
+                    NULL
+weekly_avg_poll</code></pre>
+<p><img src="/blogs/blog7_files/figure-html/trump_margins-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># save the picture in the right proportion
+ggsave(&quot;weekly_avg_poll.jpg&quot;,plot = weekly_avg_poll, width = 9,height = 4, path = here::here(&quot;plotted images&quot;))
+# print saved plots
+knitr::include_graphics(here::here(&quot;plotted images&quot;, &quot;weekly_avg_poll.jpg&quot;))</code></pre>
+<p><img src="C:/Users/sammy/Desktop/applied%20stat%20with%20R/my_website/plotted%20images/weekly_avg_poll.jpg" width="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="compare-confidence-intervals" class="section level2">
+<h2>Compare Confidence Intervals</h2>
+<p>Compare the confidence intervals for <code>week 15</code> (6-12 April 2020) and <code>week 34</code> (17-23 August 2020). Can you explain what’s going on? One paragraph would be enough.</p>
+<p>We can see from the table below that the confidence interval at ‘week 34’ is 4.85 larger than ‘week 15’.This is because the confidence interval lower limit in ‘week 34’ is 5.16 lower than ‘week 15’, although their upper limits are quite close. This can be traced back to the difference between the standard deviation figures(delta = 8.10 - 3.12 = 4.98). However, there exists inaccuracy, especially when the count for ‘week 34’ is only 22 and this strengens the result of a bigger standard error. This means that the interval that would capture the true average net approval rate of Trump is wider in ‘week 34’, in other word, voters have hugely deviated opinions regarding whether they want to approve Trump in ‘week 34’. The high variability in week 34 may be due to changes in coronavirus crisis.</p>
+<pre class="r"><code>library(kableExtra)
+
+#print a table of all related variables for further comparison
+avg_per_week_15_34 &lt;- avg_per_week %&gt;% 
+  filter(year == 2020 &amp; week %in% c(15,34)) %&gt;% 
+  mutate(ci = ci_upper - ci_lower) 
+
+kbl(avg_per_week_15_34) %&gt;% 
+  kable_styling(full_width = F) %&gt;% 
+  kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;, &quot;responsive&quot;))</code></pre>
+<table class="table table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:right;">
+week
+</th>
+<th style="text-align:right;">
+avg_net_approval_rate
+</th>
+<th style="text-align:right;">
+SD
+</th>
+<th style="text-align:right;">
+count
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+t_critical
+</th>
+<th style="text-align:right;">
+ci_lower
+</th>
+<th style="text-align:right;">
+ci_upper
+</th>
+<th style="text-align:right;">
+ci
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+-7.72
+</td>
+<td style="text-align:right;">
+3.12
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+0.57
+</td>
+<td style="text-align:right;">
+2.04
+</td>
+<td style="text-align:right;">
+-8.89
+</td>
+<td style="text-align:right;">
+-6.55
+</td>
+<td style="text-align:right;">
+2.33
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:right;">
+34
+</td>
+<td style="text-align:right;">
+-10.46
+</td>
+<td style="text-align:right;">
+8.10
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1.73
+</td>
+<td style="text-align:right;">
+2.08
+</td>
+<td style="text-align:right;">
+-14.05
+</td>
+<td style="text-align:right;">
+-6.87
+</td>
+<td style="text-align:right;">
+7.18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
