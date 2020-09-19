@@ -1,7 +1,7 @@
 # Site settings
 baseURL = "https://awesome-sammy-website.netlify.app/"
 languageCode = "en-us"
-title = "Portfolio website for Chen Sammy Chen"
+title = "Portfolio website for Sammy Chen"
 theme = "forty"
 
 # Enter your tracking code to enable Google Analytics
