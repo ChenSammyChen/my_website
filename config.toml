@@ -81,8 +81,8 @@ disqusShortname = ""
   [params.banner]
     # To change the background image on the homepage banner, replace 'banner.jpg' in
     # the 'static/img' folder.
-    title = "Hi, my name is Sammy"
-    subtitle = "A RESPONSIVE SITE TEMPLATE DESIGNED BY HTML5 UP\nAND RELEASED UNDER THE CREATIVE COMMONS."
+    title = "Sammy(Chen) Chen "
+    subtitle = "不易流行 | fluid and transitory | eternal and immutable."
     buttonText = "Get Started"
 
 
@@ -92,14 +92,14 @@ disqusShortname = ""
     # Display your showcases here.
     
     [[params.tiles.showcase]]
-      title = "NYT_Masks"
-      subtitle = "How does mask use accdeptance vary in the US?"
+      title = "Trump's Approval Margins"
+      subtitle = "Do Trump's Approval Margins keep changing across recent years?"
       image = "pic09.jpg"
-      url = "blogs/blog5"
+      url = "blogs/blog7"
 
     [[params.tiles.showcase]]
-      title = "GDP"
-      subtitle = "Feugiat Amet Tempus"
+      title = "GDP component and proportion comparison"
+      subtitle = "Are GDP components varying over time and among countries?"
       image = "pic02.jpg"
       url = "blogs/blog6"
 
@@ -135,17 +135,17 @@ disqusShortname = ""
     # For more informtion take a look at the README.
     # To add more blogs just copy and paste the code.
 
-  # Section Type Two
-#  [params.two]
-#    enable = true
-#    title = "Massa libero"
-#    subtitle = """Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. 
-#    Mauris aliquet magna magna sed nunc rhoncus pharetra. 
-#    Pellentesque condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor. 
-#    Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis libero.
-#    Mauris aliquet magna magna sed nunc rhoncus amet pharetra et feugiat tempus."""
-#    buttonText = "Get Started"
-#    url = "blogs"
+ #  Section Type Two
+ # [params.two]
+ #   enable = true
+ #   title = "Massa libero"
+ #   subtitle = """Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. 
+ #   Mauris aliquet magna magna sed nunc rhoncus pharetra. 
+ #   Pellentesque condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor. 
+ #   Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis libero.
+ #   Mauris aliquet magna magna sed nunc rhoncus amet pharetra et feugiat tempus."""
+ #   buttonText = "Get Started"
+ #   url = "blogs"
 
 
   # Contact section
