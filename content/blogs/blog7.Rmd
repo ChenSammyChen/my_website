@@ -136,10 +136,6 @@ weekly_avg_poll <- ggplot(data = avg_per_week, aes(x = week))+
                     NULL
 weekly_avg_poll
 
-# save the picture in the right proportion
-ggsave("weekly_avg_poll.jpg",plot = weekly_avg_poll, width = 9,height = 4, path = here::here("plotted images"))
-# print saved plots
-knitr::include_graphics(here::here("plotted images", "weekly_avg_poll.jpg"))
 
 ```
 

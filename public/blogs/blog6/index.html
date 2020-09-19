@@ -159,11 +159,8 @@ GDP_components &lt;- ggplot(data=selected_country_GDP_data, aes(x=year, y=value)
                         title = &quot;GDP components over time&quot;, 
                         subtitle = &quot;In constant 2010 USD&quot;)+
                    NULL
-
-#save it to images                   
-ggsave(&quot;GDP_components.jpg&quot;,plot = GDP_components, width = 8, height = 4.5, path = here::here(&quot;plotted images&quot;))
-knitr::include_graphics(here::here(&quot;plotted images&quot;, &quot;GDP_components.jpg&quot;))</code></pre>
-<p><img src="C:/Users/sammy/Desktop/applied%20stat%20with%20R/my_website/plotted%20images/GDP_components.jpg" width="1200" style="display: block; margin: auto;" />
+GDP_components</code></pre>
+<p><img src="/blogs/blog6_files/figure-html/generating%20a%20dataset%20with%20only%20countries%20and%20indicators%20of%20interest-1.png" width="648" style="display: block; margin: auto;" />
 Step 2-2: Calculation of GDP differences(%)</p>
 <p>Secondly, recall that GDP is the sum of Household Expenditure (Consumption <em>C</em>), Gross Capital Formation (business investment <em>I</em>), Government Expenditure (G) and Net Exports (exports - imports). Even though there is an indicator <code>Gross Domestic Product (GDP)</code> in your dataframe, I would like you to calculate it given its components discussed above.</p>
 <pre class="r"><code>GDP_manual_cal &lt;- tidy_GDP_data %&gt;% 
@@ -478,10 +475,8 @@ GDP_proportion  &lt;- ggplot(data=selected_country_GDP_proportion, aes(x=year, y
                        caption = &quot;Source: United Nations, http://unstats.un.org/unsd/snaama/Downloads&quot;)+
                    NULL
 
-#save the GDP proportion plot
-ggsave(&quot;GDP_proportion.jpg&quot;,plot = GDP_proportion, width = 8, height = 4, path = here::here(&quot;plotted images&quot;))
-knitr::include_graphics(here::here(&quot;plotted images&quot;, &quot;GDP_proportion.jpg&quot;))</code></pre>
-<p><img src="C:/Users/sammy/Desktop/applied%20stat%20with%20R/my_website/plotted%20images/GDP_proportion.jpg" width="100%" style="display: block; margin: auto;" />
+GDP_proportion</code></pre>
+<p><img src="/blogs/blog6_files/figure-html/gdp2-1.png" width="100%" style="display: block; margin: auto;" />
 Step 2-5: Analysis of the “GDP proportion” plot</p>
 <blockquote>
 <p>What is this last chart telling you? Can you explain in a couple of paragraphs the different dynamic among these three countries?</p>
@@ -515,9 +510,8 @@ new_GDP_components &lt;- ggplot(data=new_selected_country_GDP_data, aes(x=year, 
                         subtitle = &quot;In constant 2010 USD&quot;)+
                    NULL
 
-ggsave(&quot;new_GDP_components.jpg&quot;,plot = new_GDP_components, width = 8, height = 4.5, path = here::here(&quot;plotted images&quot;))
-knitr::include_graphics(here::here(&quot;plotted images&quot;, &quot;new_GDP_components.jpg&quot;))                </code></pre>
-<p><img src="C:/Users/sammy/Desktop/applied%20stat%20with%20R/my_website/plotted%20images/new_GDP_components.jpg" width="1200" style="display: block; margin: auto;" />
+new_GDP_components            </code></pre>
+<p><img src="/blogs/blog6_files/figure-html/creating%20new%20country%20list-1.png" width="648" style="display: block; margin: auto;" />
 Step 3-2: Analysis of the new GDP component graph with the new country list</p>
 <p>The three Asian countries show quite different trends regarding GDP components over time trend. They also stand on different magnitude because of population and territory differences. The only thing that they share in common is that roughly every component in each of the three country is experiencing a upward thrend, with only a outlier of Japan’s ‘Government expenditure’.</p>
 <p>In China, all the five measures share similar shape of increase, which seems to be slow from 1970 to 2000 and fast ever since then. ‘Household expenditure’. We can probably infer from the graph that all other 4 components are driven by government’s efforts into expenditure rise.</p>
@@ -551,9 +545,8 @@ new_GDP_proportion  &lt;- ggplot(data=new_selected_country_GDP_proportion, aes(x
                        caption = &quot;Source: United Nations, http://unstats.un.org/unsd/snaama/Downloads&quot;)+
                    NULL
 
-ggsave(&quot;new_GDP_proportion.jpg&quot;,plot = new_GDP_proportion, width = 8, height = 4, path = here::here(&quot;plotted images&quot;))
-knitr::include_graphics(here::here(&quot;plotted images&quot;, &quot;new_GDP_proportion.jpg&quot;))</code></pre>
-<p><img src="C:/Users/sammy/Desktop/applied%20stat%20with%20R/my_website/plotted%20images/new_GDP_proportion.jpg" width="1200" style="display: block; margin: auto;" />
+new_GDP_proportion</code></pre>
+<p><img src="/blogs/blog6_files/figure-html/creating%20new%20GDP_proportion%20analysis-1.png" width="648" style="display: block; margin: auto;" />
 Step 3-4: Analysis of the new GDP proportion graph with the new country list</p>
 <p>The picked Asian countries also display different trends in proportion of GDP across the 5 decades.</p>
 <p>In China, ‘Household expenditure’ contracted drastically ever since 1970 and ‘Gross capital formation’ rised with fluctuation. This may be because the “reform and open-up policy” in China have granted several opportunities for ‘Investment’ and ‘Export prosperity’.</p>

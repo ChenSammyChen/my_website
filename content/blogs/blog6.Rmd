@@ -134,10 +134,7 @@ GDP_components <- ggplot(data=selected_country_GDP_data, aes(x=year, y=value))+
                         title = "GDP components over time", 
                         subtitle = "In constant 2010 USD")+
                    NULL
-
-#save it to images                   
-ggsave("GDP_components.jpg",plot = GDP_components, width = 8, height = 4.5, path = here::here("plotted images"))
-knitr::include_graphics(here::here("plotted images", "GDP_components.jpg"))
+GDP_components
 
 ```
 Step 2-2: Calculation of GDP differences(%)
@@ -213,10 +210,7 @@ GDP_proportion  <- ggplot(data=selected_country_GDP_proportion, aes(x=year, y=va
                        caption = "Source: United Nations, http://unstats.un.org/unsd/snaama/Downloads")+
                    NULL
 
-#save the GDP proportion plot
-ggsave("GDP_proportion.jpg",plot = GDP_proportion, width = 8, height = 4, path = here::here("plotted images"))
-knitr::include_graphics(here::here("plotted images", "GDP_proportion.jpg"))
-
+GDP_proportion
 
 ```
 Step 2-5: Analysis of the "GDP proportion" plot
@@ -260,8 +254,7 @@ new_GDP_components <- ggplot(data=new_selected_country_GDP_data, aes(x=year, y=v
                         subtitle = "In constant 2010 USD")+
                    NULL
 
-ggsave("new_GDP_components.jpg",plot = new_GDP_components, width = 8, height = 4.5, path = here::here("plotted images"))
-knitr::include_graphics(here::here("plotted images", "new_GDP_components.jpg"))                
+new_GDP_components            
 
 ```
 Step 3-2: Analysis of the new GDP component graph with the new country list
@@ -303,8 +296,7 @@ new_GDP_proportion  <- ggplot(data=new_selected_country_GDP_proportion, aes(x=ye
                        caption = "Source: United Nations, http://unstats.un.org/unsd/snaama/Downloads")+
                    NULL
 
-ggsave("new_GDP_proportion.jpg",plot = new_GDP_proportion, width = 8, height = 4, path = here::here("plotted images"))
-knitr::include_graphics(here::here("plotted images", "new_GDP_proportion.jpg"))
+new_GDP_proportion
 
 ```
 Step 3-4: Analysis of the new GDP proportion graph with the new country list
