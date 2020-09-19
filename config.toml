@@ -92,15 +92,15 @@ disqusShortname = ""
     # Display your showcases here.
     
     [[params.tiles.showcase]]
-      title = "Trump's Approval Margins"
-      subtitle = "Do Trump's Approval Margins keep changing across recent years?"
-      image = "pic09.jpg"
-      url = "blogs/blog7"
-
-    [[params.tiles.showcase]]
       title = "GDP component and proportion comparison"
       subtitle = "Are GDP components varying over time and among countries?"
       image = "pic02.jpg"
+      url = "blogs/blog6"
+
+    [[params.tiles.showcase]]
+      title = "Trump's Approval Margins"
+      subtitle = "Do Trump's Approval Margins keep changing across recent years?"
+      image = "pic09.jpg"
       url = "blogs/blog6"
 
     [[params.tiles.showcase]]
