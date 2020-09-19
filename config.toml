@@ -110,10 +110,10 @@ disqusShortname = ""
       url = "blogs/blog5"
 
     [[params.tiles.showcase]]
-      title = "Ipsum"
-      subtitle = "Nisl Sed Aliquam"
+      title = "Who is Sammy"
+      subtitle = "'She'"
       image = "pic04.jpg"
-      url = "blogs/ipsum"
+      url = "https://wx1.sinaimg.cn/mw690/86fe7f32gy1giwm6t7s1mj20jn0pctcv.jpg"
 
 #    [[params.tiles.showcase]]
 #      title = "Consequat"
