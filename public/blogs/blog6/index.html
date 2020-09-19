@@ -1,0 +1,599 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<meta name="description" content="Made in China">
+	<meta name="author" content="sammy Chen">
+	<meta name="generator" content="Hugo 0.74.3" />
+	<title>GDP Comparison &middot; Portfolio website for Chen Sammy Chen</title>
+	<!-- Stylesheets -->
+	
+	<link rel="stylesheet" href="/css/main.css"/>
+	
+	
+
+	
+
+	<!-- Custom Fonts -->
+	<link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	
+	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="icon" type="image/x-icon" href="/favicon.ico">
+	
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="js/ie/html5shiv.js"></script>
+	<script src="js/ie/html5shiv.jsrespond.min.js"></script>
+	<![endif]-->
+</head>
+
+    <body>
+
+    <!-- Wrapper -->
+        <div id="wrapper">
+
+            <!-- Header -->
+    <header id="header" class="alt">
+        <a href="/" class="logo"><strong>Sammy Chen</strong> <span></span></a>
+        <nav>
+            <a href="#menu">Menu</a>
+        </nav>
+    </header>
+
+<!-- Menu -->
+    <nav id="menu">
+        <ul class="links">
+            
+                <li><a href="/">Home</a></li>
+            
+                <li><a href="/blogs">Blogs</a></li>
+            
+
+        </ul>
+        <ul class="actions vertical">
+            
+                <li><a href="/blogs" class="button special fit">My projects</a></li>
+            
+            
+        </ul>
+    </nav>
+
+        <!-- Main -->
+            <div id="main" class="alt">
+
+                
+                    <section id="one">
+                        <div class="inner">
+                            <header class="major">
+                                <h1>GDP Comparison</h1>
+                            </header>
+                            
+                                <span class="image main"><img src="/img/blogs/pic03.jpg" alt="" /></span>
+                            
+                            
+
+
+<hr />
+<p>GDP components over time and among countries</p>
+<p>At the risk of oversimplifying things, the main components of gross domestic product, GDP are personal consumption (C), business investment (I), government spending (G) and net exports (exports - imports). You can read more about GDP and the different approaches in calculating at the <a href="https://en.wikipedia.org/wiki/Gross_domestic_product">Wikipedia GDP page</a>.</p>
+<p>The GDP data we will look at is from the <a href="https://unstats.un.org/unsd/snaama/Downloads">United Nations’ National Accounts Main Aggregates Database</a>, which contains estimates of total GDP and its components for all countries from 1970 to today. We will look at how GDP and its components have changed over time, and compare different countries and how much each component contributes to that country’s GDP. The file we will work with is <a href="http://unstats.un.org/unsd/amaapi/api/file/6">GDP and its breakdown at constant 2010 prices in US Dollars</a> and it has already been saved in the Data directory. Have a look at the Excel file to see how it is structured and organised</p>
+<pre class="r"><code>#read the dataset 
+UN_GDP_data  &lt;-  read_excel(here::here(&quot;data&quot;, &quot;Download-GDPconstant-USD-countries.xls&quot;), # Excel filename
+                sheet=&quot;Download-GDPconstant-USD-countr&quot;, # Sheet name
+                skip=2) # Number of rows to skip</code></pre>
+<p>The first thing you need to do is to tidy the data, as it is in wide format and you must make it into long, tidy format. Please express all figures in billions (divide values by <code>1e9</code>, or <span class="math inline">\(10^9\)</span>), and you want to rename the indicators into something shorter.</p>
+<p>Step 1: Tidy the data</p>
+<pre class="r"><code>tidy_GDP_data  &lt;-  UN_GDP_data %&gt;% 
+#conclude all years into one column 
+                     pivot_longer(cols=4:51,
+                                  names_to=&quot;year&quot;,
+                                  values_to=&quot;value&quot;) %&gt;% 
+#we want to change the names of indicators so firstly change them into columns
+                     pivot_wider(names_from=&quot;IndicatorName&quot;,
+                                 values_from=&quot;value&quot;) 
+tidy_GDP_data &lt;- tidy_GDP_data %&gt;% 
+#rename the indicators of interests
+                  rename(&quot;Household expenditure&quot; = &quot;Household consumption expenditure (including Non-profit institutions serving households)&quot;,
+                  &quot;Government expenditure&quot;=&quot;General government final consumption expenditure&quot;,
+                  &quot;Exports&quot;=&quot;Exports of goods and services&quot;,
+                  &quot;Imports&quot;=&quot;Imports of goods and services&quot;,
+                  &quot;Gross_fixed_capital_formation&quot; = &quot;Gross fixed capital formation (including Acquisitions less disposals of valuables)&quot;,
+                  &quot;Agriculture&quot;=&quot;Agriculture, hunting, forestry, fishing (ISIC A-B)&quot;,
+                  &quot;Mining&quot;=&quot;Mining, Manufacturing, Utilities (ISIC C-E)&quot;,
+                  &quot;Manufacturing&quot;=&quot;Manufacturing (ISIC D)&quot;,
+                  &quot;Construction&quot;=&quot;Construction (ISIC F)&quot;,
+                  &quot;Wholesale&quot;=&quot;Wholesale, retail trade, restaurants and hotels (ISIC G-H)&quot;,
+                  &quot;Transport&quot;=&quot;Transport, storage and communication (ISIC I)&quot;,
+                  &quot;Other_activities&quot;=&quot;Other Activities (ISIC J-P)&quot;,
+                  &quot;Inventory&quot;=&quot;Changes in inventories&quot;)
+
+#make the dataset long again with indicators in one column
+tidy_GDP_data &lt;- tidy_GDP_data %&gt;% 
+                  pivot_longer(cols=4:20,
+                  names_to=&quot;IndicatorName&quot;,
+                  values_to=&quot;value&quot;) 
+
+#numbers are easier to understand on billion scale
+tidy_GDP_data$value &lt;- tidy_GDP_data$value/1e9 
+                    
+#take a glimpse of our work!
+glimpse(tidy_GDP_data)</code></pre>
+<pre><code>## Rows: 179,520
+## Columns: 5
+## $ CountryID     &lt;dbl&gt; 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,...
+## $ Country       &lt;chr&gt; &quot;Afghanistan&quot;, &quot;Afghanistan&quot;, &quot;Afghanistan&quot;, &quot;Afghani...
+## $ year          &lt;chr&gt; &quot;1970&quot;, &quot;1970&quot;, &quot;1970&quot;, &quot;1970&quot;, &quot;1970&quot;, &quot;1970&quot;, &quot;1970...
+## $ IndicatorName &lt;chr&gt; &quot;Final consumption expenditure&quot;, &quot;Household expenditu...
+## $ value         &lt;dbl&gt; 5.559, 5.065, 0.372, 0.985, 0.985, 0.112, 0.184, 10.7...</code></pre>
+<pre class="r"><code># Let us compare GDP components for these 3 countries
+country_list &lt;- c(&quot;United States&quot;,&quot;India&quot;, &quot;Germany&quot;)
+selected_indicators &lt;- c(&quot;Gross capital formation&quot;, &quot;Exports&quot;, &quot;Government expenditure&quot;, &quot;Household expenditure&quot;, &quot;Imports&quot;)</code></pre>
+<p>Step 2: Replicate the two given GDP Plots
+Step 2-1: Replicate the “GDP components” plot</p>
+<pre class="r"><code>#generate a dataset with only countries and indicators of interests
+selected_country_GDP_data &lt;- tidy_GDP_data %&gt;% 
+                               filter(Country %in% country_list &amp; IndicatorName %in% selected_indicators)
+
+GDP_components &lt;- ggplot(data=selected_country_GDP_data, aes(x=year, y=value))+
+                   geom_line(aes(group = IndicatorName, color = IndicatorName), size = 1, alpha = 0.6)+
+#scale the x and y axis
+                   scale_x_discrete(breaks=seq(1970, 2016, by = 10))+
+                   scale_y_continuous(name = &quot;Billion US$&quot;)+
+                   facet_wrap(~Country)+
+#theme the plot to make it look better
+                   theme_bw()+
+#change the legends 
+                   scale_colour_discrete(name = &quot;Components of GDP&quot;,
+                                         labels = c(&quot;Gross capital formation&quot;, &quot;Exports&quot;,
+                                         &quot;Government expenditure&quot;, &quot;Household expenditure&quot;,
+                                         &quot;Imports&quot;)) +
+                   theme(axis.text = element_text(size = 7)) +
+                   labs(x = NULL, 
+                        y = &quot;Components of GDP&quot;, 
+                        title = &quot;GDP components over time&quot;, 
+                        subtitle = &quot;In constant 2010 USD&quot;)+
+                   NULL</code></pre>
+<p>Step 2-2: Calculation of GDP differences(%)</p>
+<p>Secondly, recall that GDP is the sum of Household Expenditure (Consumption <em>C</em>), Gross Capital Formation (business investment <em>I</em>), Government Expenditure (G) and Net Exports (exports - imports). Even though there is an indicator <code>Gross Domestic Product (GDP)</code> in your dataframe, I would like you to calculate it given its components discussed above.</p>
+<pre class="r"><code>GDP_manual_cal &lt;- tidy_GDP_data %&gt;% 
+                   filter(IndicatorName %in% c(&quot;Gross capital formation&quot;, &quot;Exports&quot;, &quot;Government expenditure&quot;, &quot;Household expenditure&quot;, &quot;Imports&quot;, &quot;Gross Domestic Product (GDP)&quot;)) %&gt;% 
+#use pivot_wider for further column calculations
+                   pivot_wider(names_from = &quot;IndicatorName&quot;,
+                               values_from = &quot;value&quot;) %&gt;% 
+                   mutate(`Net Exports` = Exports - Imports,
+                           GDP_calculated = `Household expenditure`+`Government expenditure`+`Gross capital formation`+`Net Exports`,
+                           `% difference` = round(100 - 100*GDP_calculated/`Gross Domestic Product (GDP)`, digits = 2)) 
+                   options(scipen = 200)
+
+GDP_manual_cal</code></pre>
+<pre><code>## # A tibble: 10,560 x 12
+##    CountryID Country year  `Household expe~ `Government exp~ `Gross capital ~
+##        &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+##  1         4 Afghan~ 1970              5.07            0.372            0.985
+##  2         4 Afghan~ 1971              4.84            0.382            1.05 
+##  3         4 Afghan~ 1972              4.70            0.402            0.919
+##  4         4 Afghan~ 1973              5.21            0.421            0.919
+##  5         4 Afghan~ 1974              5.59            0.431            1.18 
+##  6         4 Afghan~ 1975              5.65            0.598            1.37 
+##  7         4 Afghan~ 1976              5.68            0.627            2.03 
+##  8         4 Afghan~ 1977              6.15            0.676            1.92 
+##  9         4 Afghan~ 1978              6.30            0.725            2.22 
+## 10         4 Afghan~ 1979              6.15            0.708            2.07 
+## # ... with 10,550 more rows, and 6 more variables: Exports &lt;dbl&gt;,
+## #   Imports &lt;dbl&gt;, `Gross Domestic Product (GDP)` &lt;dbl&gt;, `Net Exports` &lt;dbl&gt;,
+## #   GDP_calculated &lt;dbl&gt;, `% difference` &lt;dbl&gt;</code></pre>
+<pre class="r"><code>#skim the average and variability of GDP difference(%)
+skim(GDP_manual_cal)</code></pre>
+<table>
+<caption>(#tab:manually calculate the GDP)Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">GDP_manual_cal</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">10560</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">12</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">character</td>
+<td align="left">2</td>
+</tr>
+<tr class="odd">
+<td align="left">numeric</td>
+<td align="left">10</td>
+</tr>
+<tr class="even">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">empty</th>
+<th align="right">n_unique</th>
+<th align="right">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Country</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">34</td>
+<td align="right">0</td>
+<td align="right">220</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">year</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">48</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col width="20%" />
+<col width="6%" />
+<col width="9%" />
+<col width="4%" />
+<col width="4%" />
+<col width="5%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="5%" />
+<col width="28%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">CountryID</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">439.53</td>
+<td align="right">253.82</td>
+<td align="right">4.00</td>
+<td align="right">217.00</td>
+<td align="right">439.00</td>
+<td align="right">660.50</td>
+<td align="right">894.0</td>
+<td align="left">▇▇▇▇▆</td>
+</tr>
+<tr class="even">
+<td align="left">Household expenditure</td>
+<td align="right">944</td>
+<td align="right">0.91</td>
+<td align="right">125.62</td>
+<td align="right">596.50</td>
+<td align="right">0.00</td>
+<td align="right">1.51</td>
+<td align="right">6.68</td>
+<td align="right">43.47</td>
+<td align="right">12021.1</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">Government expenditure</td>
+<td align="right">944</td>
+<td align="right">0.91</td>
+<td align="right">39.64</td>
+<td align="right">166.49</td>
+<td align="right">0.00</td>
+<td align="right">0.34</td>
+<td align="right">1.60</td>
+<td align="right">12.24</td>
+<td align="right">2510.1</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">Gross capital formation</td>
+<td align="right">944</td>
+<td align="right">0.91</td>
+<td align="right">53.52</td>
+<td align="right">235.11</td>
+<td align="right">-14.98</td>
+<td align="right">0.43</td>
+<td align="right">2.39</td>
+<td align="right">19.40</td>
+<td align="right">4702.1</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">Exports</td>
+<td align="right">917</td>
+<td align="right">0.91</td>
+<td align="right">49.56</td>
+<td align="right">158.58</td>
+<td align="right">-44.84</td>
+<td align="right">0.59</td>
+<td align="right">3.38</td>
+<td align="right">24.60</td>
+<td align="right">2513.0</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">Imports</td>
+<td align="right">938</td>
+<td align="right">0.91</td>
+<td align="right">47.14</td>
+<td align="right">166.25</td>
+<td align="right">0.01</td>
+<td align="right">0.90</td>
+<td align="right">3.98</td>
+<td align="right">21.57</td>
+<td align="right">3069.9</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">Gross Domestic Product (GDP)</td>
+<td align="right">896</td>
+<td align="right">0.92</td>
+<td align="right">219.22</td>
+<td align="right">952.46</td>
+<td align="right">0.01</td>
+<td align="right">2.32</td>
+<td align="right">11.24</td>
+<td align="right">80.73</td>
+<td align="right">17348.6</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">Net Exports</td>
+<td align="right">938</td>
+<td align="right">0.91</td>
+<td align="right">2.56</td>
+<td align="right">37.44</td>
+<td align="right">-830.27</td>
+<td align="right">-1.10</td>
+<td align="right">-0.11</td>
+<td align="right">0.87</td>
+<td align="right">380.7</td>
+<td align="left">▁▁▁▇▁</td>
+</tr>
+<tr class="odd">
+<td align="left">GDP_calculated</td>
+<td align="right">986</td>
+<td align="right">0.91</td>
+<td align="right">218.76</td>
+<td align="right">959.01</td>
+<td align="right">0.01</td>
+<td align="right">2.26</td>
+<td align="right">11.05</td>
+<td align="right">78.78</td>
+<td align="right">17342.1</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">% difference</td>
+<td align="right">986</td>
+<td align="right">0.91</td>
+<td align="right">-0.40</td>
+<td align="right">8.71</td>
+<td align="right">-115.88</td>
+<td align="right">-2.19</td>
+<td align="right">0.00</td>
+<td align="right">2.12</td>
+<td align="right">54.9</td>
+<td align="left">▁▁▁▇▁</td>
+</tr>
+</tbody>
+</table>
+<p>Step 2-3: Explanation of GDP differences(%)
+&gt; What is the % difference between what you calculated as GDP and the GDP figure included in the dataframe?</p>
+<p>From the skim result above, we can see the difference between our calculated GDP and the given GDP figure is around the average figure of -0.398%. The formula used here is "100 - 100*GDP_calculated/<code>Gross Domestic Product (GDP)</code>"%. (GDP_calculated stands for our manual calculation; <code>Gross Domestic Product(GDP)</code>is the given)</p>
+<p>The difference is due to the minor difference of the figures adopted in calculating GDP by Worldbank and us.
+We calculated GDP as the sum of ‘Household Expenditure (Consumption <em>C</em>)’, ‘Gross Capital Formation (business investment <em>I</em>)’, ‘Government Expenditure (G)’ and ‘Net Exports (exports - imports)’.</p>
+<p>However, there is difference between ‘Final consumption expenditure’ and ‘Household Expenditure’ in that the latter one includes not only household but also enterprises in a certain territory. Also, differences lie between the ‘Gross capital formation’ and ‘Gross fixed capital formation’ and we choose the first one for simplicity.</p>
+<p>Meanwhile, some cultural differences such as countries’ different definitions of GDP, illegal industries or informal sectors which are excluded from the 4 measures we used count for the differences too.</p>
+<p>Step 2-4: Replicate the “GDP proportion” plot</p>
+<pre class="r"><code># generate a dataset of interests
+GDP_proportion &lt;- GDP_manual_cal %&gt;%  
+                    select(&quot;Country&quot;, &quot;year&quot;, &quot;Gross Domestic Product (GDP)&quot;, &quot;Government expenditure&quot;, &quot;Gross capital formation&quot;, &quot;Household expenditure&quot;, &quot;Net Exports&quot;) %&gt;% 
+#calculate each measure&#39;s proportion to GDP
+                    mutate(`Government expenditure` = `Government expenditure`/ `Gross Domestic Product (GDP)`,
+                           `Gross capital formation` = `Gross capital formation`/ `Gross Domestic Product (GDP)`,
+                           `Household expenditure` = `Household expenditure`/ `Gross Domestic Product (GDP)`,
+                           `Net Exports` = `Net Exports`/ `Gross Domestic Product (GDP)`) %&gt;% 
+                    pivot_longer(cols = 3:7,
+                                 names_to = &quot;IndicatorName&quot;,
+                                 values_to = &quot;value&quot;)
+                    
+
+selected_country_GDP_proportion &lt;- GDP_proportion %&gt;% 
+                               filter(Country %in% country_list &amp; IndicatorName %in% c(&quot;Government expenditure&quot;, &quot;Gross capital formation&quot;, &quot;Household expenditure&quot;, &quot;Net Exports&quot;))
+
+#Plot the proportion graph
+GDP_proportion  &lt;- ggplot(data=selected_country_GDP_proportion, aes(x=year, y=value))+
+                   geom_line(aes(group = IndicatorName, color = IndicatorName), size = 1, alpha = 0.5)+
+                   scale_x_discrete(breaks=seq(1970, 2016, by = 10))+
+#especially scale the y axis in percentage
+                   scale_y_continuous(labels = function(x) paste0(x*100, &quot;%&quot;))+
+                   scale_color_discrete(name= NULL)+
+                   facet_wrap(~Country)+
+                   theme_bw()+
+#theme it the make it look better 
+                   theme(axis.title = element_text(size = 7), 
+                         axis.text = element_text(size = 5), 
+                         plot.title = element_text(size = 9)) +
+                   labs(title = &quot;GDP and its breakdown at constant 2010 prices in US Dollars&quot;, 
+                        x = NULL, y = &quot;proportion&quot;,
+                       caption = &quot;Source: United Nations, http://unstats.un.org/unsd/snaama/Downloads&quot;)+
+                   NULL</code></pre>
+<p>Step 2-5: Analysis of the “GDP proportion” plot</p>
+<blockquote>
+<p>What is this last chart telling you? Can you explain in a couple of paragraphs the different dynamic among these three countries?</p>
+</blockquote>
+<p>Overall, ‘Household expenditure’, which takes up roughly 58%-65%, remains the largest component of GDP over 1970-2017 across the three countries. ‘Government expenditure’ and ‘Gross capital formation’ share similar percentage, ranging around 20%. ‘Net Exports’ ranks the last, with its figure slightly above or below 0.</p>
+<p>However, the three countries also display different trends across the period of 47 years.</p>
+<p>In Germany, ‘Household expenditure’ experienced a sharp fall(5%-6%) in 2007, while the rate of ‘Net Exports’ started to rise significantly to just below 10% almost simultaneously. ‘Gross capital formation’ was initially 10% over ‘Government expenditure’ at 1970 but the delta between the two slowly shrank to nearly zero after 2012.</p>
+<p>2000 saw a huge upward trend(almost 20%) in ‘Gross capital formation’ in India. This is probably because of the continuous downfall in its ‘Household expenditure’ starting from the year 1980. ‘Government expenditure’ and ‘Net Exports’ are overall stable though the latter fluctuated a little(5%) in years around 2010.</p>
+<p>The U.S. has its ‘Household expenditure’ continuously and stably rising from 63% to 70% across the whole period.’Government expenditure’ contracted and ‘Gross capital formation’ expanded with two intersections in 1988 and 2009. ‘Net Exports’ dropped to the bottom point(6%) in 2005 and bounced slowly in 2010s.</p>
+<p>Step 3: Select new country list
+&gt; Change <code>country_list &lt;- c("United States","India", "Germany")</code> to <code>new_country_list &lt;- c("China","Japan", "Republic of Korea")</code> and compare China with the two other countries since they three are all in Eastern Asia.</p>
+<p>Step 3-1: Plot the new GDP component graph with the new country list</p>
+<pre class="r"><code>new_country_list &lt;- c(&quot;China&quot;,&quot;Japan&quot;, &quot;Republic of Korea&quot;)
+new_selected_country_GDP_data &lt;- tidy_GDP_data %&gt;% 
+                               filter(Country %in% new_country_list &amp; IndicatorName %in% selected_indicators)
+
+new_GDP_components &lt;- ggplot(data=new_selected_country_GDP_data, aes(x=year, y=value))+
+                   geom_line(aes(group = IndicatorName, color = IndicatorName), size = 1, alpha = 0.6)+
+                   scale_x_discrete(breaks=seq(1970, 2016, by = 10))+
+                   scale_y_continuous(name = &quot;Billion US$&quot;)+
+                   facet_wrap(~Country)+
+                   theme_bw()+
+                   scale_colour_discrete(name = &quot;Components of GDP&quot;,
+                                         labels = c(&quot;Gross capital formation&quot;, &quot;Exports&quot;,
+                                         &quot;Government expenditure&quot;, &quot;Household expenditure&quot;,
+                                         &quot;Imports&quot;)) +
+                   theme(axis.text = element_text(size = 7)) +
+                   labs(x = NULL, 
+                        y = &quot;Components of GDP&quot;, 
+                        title = &quot;GDP components over time&quot;, 
+                        subtitle = &quot;In constant 2010 USD&quot;)+
+                   NULL</code></pre>
+<p>Step 3-2: Analysis of the new GDP component graph with the new country list</p>
+<p>The three Asian countries show quite different trends regarding GDP components over time trend. They also stand on different magnitude because of population and territory differences. The only thing that they share in common is that roughly every component in each of the three country is experiencing a upward thrend, with only a outlier of Japan’s ‘Government expenditure’.</p>
+<p>In China, all the five measures share similar shape of increase, which seems to be slow from 1970 to 2000 and fast ever since then. ‘Household expenditure’. We can probably infer from the graph that all other 4 components are driven by government’s efforts into expenditure rise.</p>
+<p>However, it seems that Japan has a different economy where ‘household expenditure’ plays the key part. ‘Government expenditure’ rised significantly during “Japanese asset price bubble” period from 1986-1991, which had a profound downward effect on the following 10 years. It is even more interesting to see that ‘Gross capital formation’ is the main driving force of Public of Korea’s economy.</p>
+<p>Step 3-3: Plot the new GDP proportion graph with the new country list</p>
+<pre class="r"><code>GDP_proportion &lt;- GDP_manual_cal %&gt;%  
+                    select(&quot;Country&quot;, &quot;year&quot;, &quot;Gross Domestic Product (GDP)&quot;, &quot;Government expenditure&quot;, &quot;Gross capital formation&quot;, &quot;Household expenditure&quot;, &quot;Net Exports&quot;) %&gt;% 
+                    mutate(`Government expenditure` = `Government expenditure`/ `Gross Domestic Product (GDP)`,
+                           `Gross capital formation` = `Gross capital formation`/ `Gross Domestic Product (GDP)`,
+                           `Household expenditure` = `Household expenditure`/ `Gross Domestic Product (GDP)`,
+                           `Net Exports` = `Net Exports`/ `Gross Domestic Product (GDP)`) %&gt;% 
+                    pivot_longer(cols = 3:7,
+                                 names_to = &quot;IndicatorName&quot;,
+                                 values_to = &quot;value&quot;)
+
+new_selected_country_GDP_proportion &lt;- GDP_proportion %&gt;% 
+                                         filter(Country %in% new_country_list &amp; IndicatorName %in% c(&quot;Government expenditure&quot;, &quot;Gross capital formation&quot;, &quot;Household expenditure&quot;, &quot;Net Exports&quot;))
+
+new_GDP_proportion  &lt;- ggplot(data=new_selected_country_GDP_proportion, aes(x=year, y=value))+
+                   geom_line(aes(group = IndicatorName, color = IndicatorName), size = 1, alpha = 0.5)+
+                   scale_x_discrete(breaks=seq(1970, 2016, by = 10))+
+                   scale_y_continuous(labels = function(x) paste0(x*100, &quot;%&quot;))+
+                   scale_color_discrete(name= NULL)+
+                   facet_wrap(~Country)+
+                   theme_bw()+
+                   theme(axis.title = element_text(size = 7), 
+                         axis.text = element_text(size = 5), 
+                         plot.title = element_text(size = 9)) +
+                   labs(title = &quot;GDP and its breakdown at constant 2010 prices in US Dollars&quot;, 
+                        x = NULL, y = &quot;proportion&quot;,
+                       caption = &quot;Source: United Nations, http://unstats.un.org/unsd/snaama/Downloads&quot;)+
+                   NULL</code></pre>
+<p>Step 3-4: Analysis of the new GDP proportion graph with the new country list</p>
+<p>The picked Asian countries also display different trends in proportion of GDP across the 5 decades.</p>
+<p>In China, ‘Household expenditure’ contracted drastically ever since 1970 and ‘Gross capital formation’ rised with fluctuation. This may be because the “reform and open-up policy” in China have granted several opportunities for ‘Investment’ and ‘Export prosperity’.</p>
+<p>Japan has clearer-categorized economic layers compared with the other two, with ‘Gross capital formation’ going down and the other three showing minimal fluctuations. South Korea experienced several huge up-and-downs in ‘Gross capital formation’ and ‘Net Exports’ and this may be explained by its Export-oriented system. It cannot be ignored that South Korea also saw the greatest percentage of downfall in ‘household consumption’, which is an indicator of inactive and aging population.</p>
+
+                        </div>
+                    </section>
+            <!-- Disqus Inject -->
+                
+            </div>
+            
+        <!-- Footer -->
+            
+                <!-- Footer -->
+    <footer id="footer">
+        <div class="inner">
+            <ul class="icons">
+                
+                    <li><a href="https://www.twitter.com" class="icon alt fa-twitter" target="_blank"><span class="label">Twitter</span></a></li>
+                
+                    <li><a href="https://www.facebook.com" class="icon alt fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
+                
+                    <li><a href="https://www.instagram.com" class="icon alt fa-instagram" target="_blank"><span class="label">Instagram</span></a></li>
+                
+                    <li><a href="https://www.github.com" class="icon alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+                
+                    <li><a href="https://www.linkedin.com" class="icon alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+                
+            </ul>
+            <ul class="copyright">
+                <li>&copy; Company Name</li>
+                
+                <li>Design:  <a href="https://www.html5up.net">HTML5 UP</a></li>
+                
+            </ul>
+        </div>
+    </footer>
+
+            
+        </div>
+
+    <!-- Scripts -->
+        <!-- Scripts -->
+    <!-- jQuery -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+
+    
+
+    <!-- Main JS -->
+    <script src="/js/main.js"></script>
+
+    
+
+    
+
+    </body>
+</html>
