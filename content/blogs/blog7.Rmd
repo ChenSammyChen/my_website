@@ -5,7 +5,7 @@ categories:
 date: '2020-09-07'
 description: What is Trump's approval rate change over time? 
 draft: false
-image: pic03.png
+image: pic03.jpg
 keywords: ""
 slug: blog7
 title: Trump approval rate changes

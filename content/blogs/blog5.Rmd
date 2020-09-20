@@ -36,6 +36,11 @@ library(skimr)
 library(vroom)
 library(mosaic)
 library(here)
+library(ggthemes)
+library(lubridate)
+library(httr)
+library(readxl)
+
 
 #remotes::install_github("kjhealy/socviz")
 library(socviz)
@@ -47,7 +52,7 @@ To make a publication-ready plot using `dplyr` and `ggplot2` skills, we firstly 
 
 
 
-```{r,}
+```{r, out.width="100%"}
 # Replicate Figure 3
 
 library(dplyr)
