@@ -83,7 +83,7 @@ white_firearm_plot <- ggplot(data = white_firearm, aes(x = adjusted.suicide.Whit
 ```
  
  
-![white_firearm_plot](https://raw.githubusercontent.com/smshen/MarkdownPhotos/master/Res/test.jpg)
+![white_firearm_plot](https://raw.githubusercontent.com/ChenSammyChen/markdown-image/master/image/white_firearm_plot.jpg)
 
 From the plot, we can see that firearm homicide and suicide were strongly associated for white men. In terms of the relationship among firearm homicide, suicide, and state gun prevalence, the 5 states with lower rates of both firearm homicide and suicide in white men(Massachusetts, New Jersey, Rhode Island, New York, Connecticut)also were in the lowest category of reported state gun prevalence.
 
@@ -118,8 +118,8 @@ black_firearm_plot <- ggplot(subset(white_firearm, type == "Firearm" & !(ST %in%
 
 ```
 
-
-![black_firearm_plot](https://wx1.sinaimg.cn/mw690/006TMXUEgy1gixgydc9pfj312l0u0jyo.jpg)
+ 
+![black_firearm_plot](https://raw.githubusercontent.com/ChenSammyChen/markdown-image/master/image/black_firearm_plot.jpg)
 
 Among black men, firearm homicide and suicide were modestly associated. States with the lowest reported prevalence of guns had the lowest rates of firearm suicide and below-average rates of firearm homicide. Missouri and several rust belt states reported the most firearm homicides among black men but medium levels of gun ownership.
 
