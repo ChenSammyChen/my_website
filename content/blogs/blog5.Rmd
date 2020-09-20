@@ -71,6 +71,9 @@ white_firearm_plot <- ggplot(data = white_firearm, aes(x = adjusted.suicide.Whit
   theme_bw()+
   NULL
 
-white_firearm_plot
+ggsave("white_firearm_plot.jpg",plot = white_firearm_plot, width = 9, height = 7, path = here::here("static/img"))
+knitr::include_graphics(here::here("static/img", "white_firearm_plot.jpg"))
+
+  
 ```
 

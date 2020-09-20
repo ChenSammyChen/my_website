@@ -38,5 +38,6 @@ white_firearm_plot &lt;- ggplot(data = white_firearm, aes(x = adjusted.suicide.W
   theme_bw()+
   NULL
 
-white_firearm_plot</code></pre>
-<p><img src="/blogs/blog5_files/figure-html/figure-1.png" width="100%" style="display: block; margin: auto;" /></p>
+ggsave(&quot;white_firearm_plot.jpg&quot;,plot = white_firearm_plot, width = 9, height = 7, path = here::here(&quot;static/img&quot;))
+knitr::include_graphics(here::here(&quot;static/img&quot;, &quot;white_firearm_plot.jpg&quot;))</code></pre>
+<p><img src="C:/Users/sammy/Desktop/applied%20stat%20with%20R/my_website/static/img/white_firearm_plot.jpg" width="100%" style="display: block; margin: auto;" /></p>
