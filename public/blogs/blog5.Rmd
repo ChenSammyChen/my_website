@@ -4,11 +4,12 @@ categories:
 - ""
 date: '2020-09-07'
 description: Are there obvious suicide/homicide rate differences between races?
-draft: true
+draft: false
 image: pic04.jpg
 keywords: ""
 slug: blog5
 title: Comparison of suicide/homicide rates between races
+---
 ---
 
 
@@ -77,10 +78,7 @@ white_firearm_plot <- ggplot(data = white_firearm, aes(x = adjusted.suicide.Whit
   theme_bw()+
   NULL
 
-ggsave("white_firearm_plot.jpg",plot = white_firearm_plot, width = 9, height = 7, path = here::here("static/img/blogs"))
-knitr::include_graphics(here::here("static/img/blogs", "white_firearm_plot.jpg"))
-
-           
+white_firearm_plot
 ```
 
 
