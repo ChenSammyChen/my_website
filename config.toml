@@ -100,22 +100,22 @@ disqusShortname = ""
     [[params.tiles.showcase]]
       title = "Trump's Approval Margins"
       subtitle = "Do Trump's Approval Margins keep changing across recent years?"
-      image = "pic09.jpg"
+      image = "pic03.png"
       url = "blogs/blog7"
 
     [[params.tiles.showcase]]
       title = "Comparison of suicide/homicide rates between races"
       subtitle = "Are there obvious racial differences?"
-      image = "pic03.jpg"
+      image = "pic04.png"
       url = "blogs/blog5"
 
-    [[params.tiles.showcase]]
+    [[params.tiles.showcase]] 
       title = "Who is Sammy"
-      subtitle = "'She'"
-      image = "pic04.jpg"
-      url = "https://wx1.sinaimg.cn/mw690/86fe7f32gy1giwm6t7s1mj20jn0pctcv.jpg"
-
-#    [[params.tiles.showcase]]
+      subtitle = "'She'" 
+      image = "pic01.jpg"
+      url = "blogs/blog1"
+      
+#。    [[params.tiles.showcase]]
 #      title = "Consequat"
 #      subtitle = "Ipsum Dolor Sit Amet"
 #     image = "pic05.jpg"

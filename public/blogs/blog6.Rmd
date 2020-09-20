@@ -5,7 +5,7 @@ categories:
 date: '2020-09-07'
 description: Are GDP components varying over time and among countries? 
 draft: false
-image: pic03.jpg
+image: pic02.jpg
 keywords: ""
 slug: blog6
 title: GDP component and proportion comparison
