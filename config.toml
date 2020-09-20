@@ -82,7 +82,7 @@ disqusShortname = ""
     # To change the background image on the homepage banner, replace 'banner.jpg' in
     # the 'static/img' folder.
     title = "Sammy(Chen) Chen "
-    subtitle = "不易流行 | fluid and transitory | eternal and immutable."
+    subtitle = "不伦不类 | 不易流行 | fluid and transitory | eternal and immutable."
     buttonText = "Get Started"
 
 
@@ -104,8 +104,8 @@ disqusShortname = ""
       url = "blogs/blog7"
 
     [[params.tiles.showcase]]
-      title = "Comparison of suicide/homicide rates between races"
-      subtitle = "Are there obvious racial differences?"
+      title = "Cultural Appropriation-Suicide/homicide rates between races"
+      subtitle = "Embrace racial differences with cultural appreciation"
       image = "pic04.jpg"
       url = "blogs/blog5"
 

@@ -80,15 +80,16 @@
 
 
 <hr />
-<p>GDP components over time and among countries</p>
+<div id="gdp-components-over-time-and-among-countries" class="section level1">
+<h1>GDP components over time and among countries</h1>
 <p>At the risk of oversimplifying things, the main components of gross domestic product, GDP are personal consumption (C), business investment (I), government spending (G) and net exports (exports - imports). You can read more about GDP and the different approaches in calculating at the <a href="https://en.wikipedia.org/wiki/Gross_domestic_product">Wikipedia GDP page</a>.</p>
-<p>The GDP data we will look at is from the <a href="https://unstats.un.org/unsd/snaama/Downloads">United Nations’ National Accounts Main Aggregates Database</a>, which contains estimates of total GDP and its components for all countries from 1970 to today. We will look at how GDP and its components have changed over time, and compare different countries and how much each component contributes to that country’s GDP. The file we will work with is <a href="http://unstats.un.org/unsd/amaapi/api/file/6">GDP and its breakdown at constant 2010 prices in US Dollars</a> and it has already been saved in the Data directory. Have a look at the Excel file to see how it is structured and organised</p>
 <pre class="r"><code>#read the dataset 
 UN_GDP_data  &lt;-  read_excel(here::here(&quot;data&quot;, &quot;Download-GDPconstant-USD-countries.xls&quot;), # Excel filename
                 sheet=&quot;Download-GDPconstant-USD-countr&quot;, # Sheet name
                 skip=2) # Number of rows to skip</code></pre>
-<p>The first thing you need to do is to tidy the data, as it is in wide format and you must make it into long, tidy format. Please express all figures in billions (divide values by <code>1e9</code>, or <span class="math inline">\(10^9\)</span>), and you want to rename the indicators into something shorter.</p>
-<p>Step 1: Tidy the data</p>
+<p>The first thing is to tidy the data, as it is in wide format and you must make it into long, tidy format. Please express all figures in billions (divide values by <code>1e9</code>, or <span class="math inline">\(10^9\)</span>), and to rename the indicators into something shorter.</p>
+<div id="step-1-tidy-the-data" class="section level2">
+<h2>Step 1: Tidy the data</h2>
 <pre class="r"><code>tidy_GDP_data  &lt;-  UN_GDP_data %&gt;% 
 #conclude all years into one column 
                      pivot_longer(cols=4:51,
@@ -134,8 +135,11 @@ glimpse(tidy_GDP_data)</code></pre>
 <pre class="r"><code># Let us compare GDP components for these 3 countries
 country_list &lt;- c(&quot;United States&quot;,&quot;India&quot;, &quot;Germany&quot;)
 selected_indicators &lt;- c(&quot;Gross capital formation&quot;, &quot;Exports&quot;, &quot;Government expenditure&quot;, &quot;Household expenditure&quot;, &quot;Imports&quot;)</code></pre>
-<p>Step 2: Replicate the two given GDP Plots
-Step 2-1: Replicate the “GDP components” plot</p>
+</div>
+<div id="step-2-replicate-the-two-given-gdp-plots" class="section level2">
+<h2>Step 2: Replicate the two given GDP Plots</h2>
+<div id="step-2-1-replicate-the-gdp-components-plot" class="section level3">
+<h3>Step 2-1: Replicate the “GDP components” plot</h3>
 <pre class="r"><code>#generate a dataset with only countries and indicators of interests
 selected_country_GDP_data &lt;- tidy_GDP_data %&gt;% 
                                filter(Country %in% country_list &amp; IndicatorName %in% selected_indicators)
@@ -159,10 +163,18 @@ GDP_components &lt;- ggplot(data=selected_country_GDP_data, aes(x=year, y=value)
                         title = &quot;GDP components over time&quot;, 
                         subtitle = &quot;In constant 2010 USD&quot;)+
                    NULL
-GDP_components</code></pre>
-<p><img src="/blogs/blog6_files/figure-html/generating%20a%20dataset%20with%20only%20countries%20and%20indicators%20of%20interest-1.png" width="648" style="display: block; margin: auto;" />
-Step 2-2: Calculation of GDP differences(%)</p>
-<p>Secondly, recall that GDP is the sum of Household Expenditure (Consumption <em>C</em>), Gross Capital Formation (business investment <em>I</em>), Government Expenditure (G) and Net Exports (exports - imports). Even though there is an indicator <code>Gross Domestic Product (GDP)</code> in your dataframe, I would like you to calculate it given its components discussed above.</p>
+
+#save the image in the corresponding file folder
+#ggsave(&quot;GDP_components.jpg&quot;,plot = GDP_components, width = 9, height = 7, path = here::here(&quot;static/img&quot;))
+#knitr::include_graphics(here::here(&quot;static/img&quot;, &quot;GDP_components.jpg&quot;))</code></pre>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/ChenSammyChen/markdown-image/master/image/GDP_components.jpg" alt="" />
+<p class="caption">GDP_components</p>
+</div>
+</div>
+<div id="step-2-2-calculation-of-gdp-differences" class="section level3">
+<h3>Step 2-2: Calculation of GDP differences(%)</h3>
+<p>Secondly, recall that GDP is the sum of Household Expenditure (Consumption <em>C</em>), Gross Capital Formation (business investment <em>I</em>), Government Expenditure (G) and Net Exports (exports - imports). Even though there is an indicator <code>Gross Domestic Product (GDP)</code> in the dataframe</p>
 <pre class="r"><code>GDP_manual_cal &lt;- tidy_GDP_data %&gt;% 
                    filter(IndicatorName %in% c(&quot;Gross capital formation&quot;, &quot;Exports&quot;, &quot;Government expenditure&quot;, &quot;Household expenditure&quot;, &quot;Imports&quot;, &quot;Gross Domestic Product (GDP)&quot;)) %&gt;% 
 #use pivot_wider for further column calculations
@@ -433,14 +445,20 @@ skim(GDP_manual_cal)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Step 2-3: Explanation of GDP differences(%)
-&gt; What is the % difference between what you calculated as GDP and the GDP figure included in the dataframe?</p>
+</div>
+<div id="step-2-3-explanation-of-gdp-differences" class="section level3">
+<h3>Step 2-3: Explanation of GDP differences(%)</h3>
+<blockquote>
+<p>What is the % difference between what you calculated as GDP and the GDP figure included in the dataframe?</p>
+</blockquote>
 <p>From the skim result above, we can see the difference between our calculated GDP and the given GDP figure is around the average figure of -0.398%. The formula used here is "100 - 100*GDP_calculated/<code>Gross Domestic Product (GDP)</code>"%. (GDP_calculated stands for our manual calculation; <code>Gross Domestic Product(GDP)</code>is the given)</p>
 <p>The difference is due to the minor difference of the figures adopted in calculating GDP by Worldbank and us.
 We calculated GDP as the sum of ‘Household Expenditure (Consumption <em>C</em>)’, ‘Gross Capital Formation (business investment <em>I</em>)’, ‘Government Expenditure (G)’ and ‘Net Exports (exports - imports)’.</p>
 <p>However, there is difference between ‘Final consumption expenditure’ and ‘Household Expenditure’ in that the latter one includes not only household but also enterprises in a certain territory. Also, differences lie between the ‘Gross capital formation’ and ‘Gross fixed capital formation’ and we choose the first one for simplicity.</p>
 <p>Meanwhile, some cultural differences such as countries’ different definitions of GDP, illegal industries or informal sectors which are excluded from the 4 measures we used count for the differences too.</p>
-<p>Step 2-4: Replicate the “GDP proportion” plot</p>
+</div>
+<div id="step-2-4-replicate-the-gdp-proportion-plot" class="section level3">
+<h3>Step 2-4: Replicate the “GDP proportion” plot</h3>
 <pre class="r"><code># generate a dataset of interests
 GDP_proportion &lt;- GDP_manual_cal %&gt;%  
                     select(&quot;Country&quot;, &quot;year&quot;, &quot;Gross Domestic Product (GDP)&quot;, &quot;Government expenditure&quot;, &quot;Gross capital formation&quot;, &quot;Household expenditure&quot;, &quot;Net Exports&quot;) %&gt;% 
@@ -475,20 +493,33 @@ GDP_proportion  &lt;- ggplot(data=selected_country_GDP_proportion, aes(x=year, y
                        caption = &quot;Source: United Nations, http://unstats.un.org/unsd/snaama/Downloads&quot;)+
                    NULL
 
-GDP_proportion</code></pre>
-<p><img src="/blogs/blog6_files/figure-html/gdp2-1.png" width="100%" style="display: block; margin: auto;" />
-Step 2-5: Analysis of the “GDP proportion” plot</p>
+#save the image in the corresponding file folder
+#ggsave(&quot;GDP_proportion.jpg&quot;,plot = GDP_components, width = 9, height = 7, path = here::here(&quot;static/img&quot;))
+#knitr::include_graphics(here::here(&quot;static/img&quot;, &quot;GDP_proportion.jpg&quot;))</code></pre>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/ChenSammyChen/markdown-image/master/image/GDP_proportion.jpg" alt="" />
+<p class="caption">GDP_proportion</p>
+</div>
+</div>
+<div id="step-2-5-analysis-of-the-gdp-proportion-plot" class="section level3">
+<h3>Step 2-5: Analysis of the “GDP proportion” plot</h3>
 <blockquote>
-<p>What is this last chart telling you? Can you explain in a couple of paragraphs the different dynamic among these three countries?</p>
+<p>The different dynamic among these three countries?</p>
 </blockquote>
 <p>Overall, ‘Household expenditure’, which takes up roughly 58%-65%, remains the largest component of GDP over 1970-2017 across the three countries. ‘Government expenditure’ and ‘Gross capital formation’ share similar percentage, ranging around 20%. ‘Net Exports’ ranks the last, with its figure slightly above or below 0.</p>
 <p>However, the three countries also display different trends across the period of 47 years.</p>
 <p>In Germany, ‘Household expenditure’ experienced a sharp fall(5%-6%) in 2007, while the rate of ‘Net Exports’ started to rise significantly to just below 10% almost simultaneously. ‘Gross capital formation’ was initially 10% over ‘Government expenditure’ at 1970 but the delta between the two slowly shrank to nearly zero after 2012.</p>
 <p>2000 saw a huge upward trend(almost 20%) in ‘Gross capital formation’ in India. This is probably because of the continuous downfall in its ‘Household expenditure’ starting from the year 1980. ‘Government expenditure’ and ‘Net Exports’ are overall stable though the latter fluctuated a little(5%) in years around 2010.</p>
 <p>The U.S. has its ‘Household expenditure’ continuously and stably rising from 63% to 70% across the whole period.’Government expenditure’ contracted and ‘Gross capital formation’ expanded with two intersections in 1988 and 2009. ‘Net Exports’ dropped to the bottom point(6%) in 2005 and bounced slowly in 2010s.</p>
-<p>Step 3: Select new country list
-&gt; Change <code>country_list &lt;- c("United States","India", "Germany")</code> to <code>new_country_list &lt;- c("China","Japan", "Republic of Korea")</code> and compare China with the two other countries since they three are all in Eastern Asia.</p>
-<p>Step 3-1: Plot the new GDP component graph with the new country list</p>
+</div>
+</div>
+<div id="step-3-select-new-country-list" class="section level2">
+<h2>Step 3: Select new country list</h2>
+<blockquote>
+<p>Change <code>country_list &lt;- c("United States","India", "Germany")</code> to <code>new_country_list &lt;- c("China","Japan", "Republic of Korea")</code> and compare China with the two other countries since they three are all in Eastern Asia.</p>
+</blockquote>
+<div id="step-3-1-plot-the-new-gdp-component-graph-with-the-new-country-list" class="section level3">
+<h3>Step 3-1: Plot the new GDP component graph with the new country list</h3>
 <pre class="r"><code>new_country_list &lt;- c(&quot;China&quot;,&quot;Japan&quot;, &quot;Republic of Korea&quot;)
 new_selected_country_GDP_data &lt;- tidy_GDP_data %&gt;% 
                                filter(Country %in% new_country_list &amp; IndicatorName %in% selected_indicators)
@@ -510,13 +541,23 @@ new_GDP_components &lt;- ggplot(data=new_selected_country_GDP_data, aes(x=year, 
                         subtitle = &quot;In constant 2010 USD&quot;)+
                    NULL
 
-new_GDP_components            </code></pre>
-<p><img src="/blogs/blog6_files/figure-html/creating%20new%20country%20list-1.png" width="648" style="display: block; margin: auto;" />
-Step 3-2: Analysis of the new GDP component graph with the new country list</p>
+
+#save the image in the corresponding file folder
+#ggsave(&quot;new_GDP_components.jpg&quot;,plot = GDP_components, width = 9, height = 7, path = here::here(&quot;static/img&quot;))
+#knitr::include_graphics(here::here(&quot;static/img&quot;, &quot;new_GDP_components.jpg&quot;))</code></pre>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/ChenSammyChen/markdown-image/master/image/new_GDP_components.jpg" alt="" />
+<p class="caption">new_GDP_components</p>
+</div>
+</div>
+<div id="step-3-2-analysis-of-the-new-gdp-component-graph-with-the-new-country-list" class="section level3">
+<h3>Step 3-2: Analysis of the new GDP component graph with the new country list</h3>
 <p>The three Asian countries show quite different trends regarding GDP components over time trend. They also stand on different magnitude because of population and territory differences. The only thing that they share in common is that roughly every component in each of the three country is experiencing a upward thrend, with only a outlier of Japan’s ‘Government expenditure’.</p>
 <p>In China, all the five measures share similar shape of increase, which seems to be slow from 1970 to 2000 and fast ever since then. ‘Household expenditure’. We can probably infer from the graph that all other 4 components are driven by government’s efforts into expenditure rise.</p>
 <p>However, it seems that Japan has a different economy where ‘household expenditure’ plays the key part. ‘Government expenditure’ rised significantly during “Japanese asset price bubble” period from 1986-1991, which had a profound downward effect on the following 10 years. It is even more interesting to see that ‘Gross capital formation’ is the main driving force of Public of Korea’s economy.</p>
-<p>Step 3-3: Plot the new GDP proportion graph with the new country list</p>
+</div>
+<div id="step-3-3-plot-the-new-gdp-proportion-graph-with-the-new-country-list" class="section level3">
+<h3>Step 3-3: Plot the new GDP proportion graph with the new country list</h3>
 <pre class="r"><code>GDP_proportion &lt;- GDP_manual_cal %&gt;%  
                     select(&quot;Country&quot;, &quot;year&quot;, &quot;Gross Domestic Product (GDP)&quot;, &quot;Government expenditure&quot;, &quot;Gross capital formation&quot;, &quot;Household expenditure&quot;, &quot;Net Exports&quot;) %&gt;% 
                     mutate(`Government expenditure` = `Government expenditure`/ `Gross Domestic Product (GDP)`,
@@ -545,12 +586,22 @@ new_GDP_proportion  &lt;- ggplot(data=new_selected_country_GDP_proportion, aes(x
                        caption = &quot;Source: United Nations, http://unstats.un.org/unsd/snaama/Downloads&quot;)+
                    NULL
 
-new_GDP_proportion</code></pre>
-<p><img src="/blogs/blog6_files/figure-html/creating%20new%20GDP_proportion%20analysis-1.png" width="648" style="display: block; margin: auto;" />
-Step 3-4: Analysis of the new GDP proportion graph with the new country list</p>
+#save the image in the corresponding file folder
+#ggsave(&quot;new_GDP_proportion.jpg&quot;,plot = GDP_components, width = 9, height = 7, path = here::here(&quot;static/img&quot;))
+#knitr::include_graphics(here::here(&quot;static/img&quot;, &quot;new_GDP_proportion.jpg&quot;))</code></pre>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/ChenSammyChen/markdown-image/master/image/new_GDP_proportion.jpg" alt="" />
+<p class="caption">new_GDP_proportion</p>
+</div>
+</div>
+<div id="step-3-4-analysis-of-the-new-gdp-proportion-graph-with-the-new-country-list" class="section level3">
+<h3>Step 3-4: Analysis of the new GDP proportion graph with the new country list</h3>
 <p>The picked Asian countries also display different trends in proportion of GDP across the 5 decades.</p>
 <p>In China, ‘Household expenditure’ contracted drastically ever since 1970 and ‘Gross capital formation’ rised with fluctuation. This may be because the “reform and open-up policy” in China have granted several opportunities for ‘Investment’ and ‘Export prosperity’.</p>
 <p>Japan has clearer-categorized economic layers compared with the other two, with ‘Gross capital formation’ going down and the other three showing minimal fluctuations. South Korea experienced several huge up-and-downs in ‘Gross capital formation’ and ‘Net Exports’ and this may be explained by its Export-oriented system. It cannot be ignored that South Korea also saw the greatest percentage of downfall in ‘household consumption’, which is an indicator of inactive and aging population.</p>
+</div>
+</div>
+</div>
 
                         </div>
                     </section>

@@ -12,14 +12,14 @@
     
     
     <item>
-      <title>Comparison of suicide/homicide rates between races</title>
+      <title>Cultural Appropriation-Suicide/homicide rates between races</title>
       <link>/blogs/blog5/</link>
       <pubDate>Mon, 07 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>/blogs/blog5/</guid>
       <description>It is unknown how much the difference in excess deaths due to homicide among black men and suicide among white men vary by US state.
 To compare the rates of firearm and non-firearm homicide and suicide in black and white non-Hispanic men by US state and examine their associations with state prevalence of gun ownership.
-The relationship between the annual rates of firearm homicide and suicide among white men# Discover the relationship between tha annual rates of firearm homicide and suicide among white menlibrary(dplyr)library(ggplot2)library(ggrepel)white_firearm &amp;lt;- vroom::vroom(here::here(&amp;quot;data&amp;quot;,&amp;quot;CDC_Males.</description>
+In analysis part, I not only pointed out the circumstances but also bring out the resolutions in the concept of “cultural appropriation”.</description>
     </item>
     
     <item>
@@ -28,9 +28,8 @@ The relationship between the annual rates of firearm homicide and suicide among 
       <pubDate>Mon, 07 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>/blogs/blog6/</guid>
-      <description>GDP components over time and among countries
-At the risk of oversimplifying things, the main components of gross domestic product, GDP are personal consumption (C), business investment (I), government spending (G) and net exports (exports - imports). You can read more about GDP and the different approaches in calculating at the Wikipedia GDP page.
-The GDP data we will look at is from the United Nations’ National Accounts Main Aggregates Database, which contains estimates of total GDP and its components for all countries from 1970 to today.</description>
+      <description>GDP components over time and among countriesAt the risk of oversimplifying things, the main components of gross domestic product, GDP are personal consumption (C), business investment (I), government spending (G) and net exports (exports - imports). You can read more about GDP and the different approaches in calculating at the Wikipedia GDP page.
+#read the dataset UN_GDP_data &amp;lt;- read_excel(here::here(&amp;quot;data&amp;quot;, &amp;quot;Download-GDPconstant-USD-countries.xls&amp;quot;), # Excel filenamesheet=&amp;quot;Download-GDPconstant-USD-countr&amp;quot;, # Sheet nameskip=2) # Number of rows to skipThe first thing is to tidy the data, as it is in wide format and you must make it into long, tidy format.</description>
     </item>
     
     <item>

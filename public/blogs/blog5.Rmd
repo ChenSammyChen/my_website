@@ -1,7 +1,7 @@
 ---
-title: "Comparison of suicide/homicide rates between races"
+title: "Cultural Appropriation-Suicide/homicide rates between races"
 date: '2020-09-07'
-description: Are there suicide/homicide rate differences between races?
+description: Embrace racial differences with cultural appreciation
 draft: no
 image: pic04.jpg
 keywords: ''
@@ -15,6 +15,8 @@ categories:
 It is unknown how much the difference in excess deaths due to homicide among black men and suicide among white men vary by US state. 
 
 To compare the rates of firearm and non-firearm homicide and suicide in black and white non-Hispanic men by US state and examine their associations with state prevalence of gun ownership.
+
+In analysis part, I not only pointed out the circumstances but also bring out the resolutions in the concept of "cultural appropriation".
 
 
 
@@ -125,9 +127,51 @@ Among black men, firearm homicide and suicide were modestly associated. States w
 
 # Results further explanation
 
+Firearm homicide rates among black men varied substantially across states.
+For white men, firearm homicide and suicide shared a strong positive association.
+We consider the differences across states for different reasons, including state gun prevalence, alcohol and cultural appropriation.
+State gun prevalence was strongly tied to firearm suicide for both black and white man. Alcohol is deeply connected to people's perception of fear, anger and so on. It also relates to social inequality.
+
+# Cultural appropriation
+
+## Examples
+
+- Many forms of yoga cultural appropriation are subtle; they involve knowingly glamorizing a cultural practice but rationalizing it as harmless and fun. 
+
+- Utah teen Keziah Daum, who in April 2018 arrived at her high school prom wearing a red qipao, a tight, high-collared Chinese dress signaling upper-class status.
+
+## Definition
+
+"Cultural Appropriation" is taking one aspect of a culture that is not your own and using it for your own personal interest without full respect.
+
+In this case, there exists some degrees of cultural appropriation where a people's culture is not fully understood by another. This ignites fire between peoples.
+
+### Cons
+- Cultural appropriation occurs when a more powerful person or institution projects the culture of a less powerful person
+
+- Sometimes, Cultural appropriation  does not  come from a genuine place of appreciation.
+
+- For the people whose cultures are appropriated may know the items won’t be honored,  cultural appropriation may evoke a sense of loss.
+
+### Pros
+
+- It helps protect legacy and tradition of human beings.
+
+- It creates opportunities for acculturation.
+
+- It benefits the less-powered in terms of revenue from selling handicraft works of Art. 
 
 
+# Advice on the topic using "Cultural Appreciation"
 
+Cultural Appropriation is a controversial topic. 
 
+However, don’t be afraid to show misunderstanding, which is natural. Also, one  can remain neutral though he/she does not necessarily know much about the cultural. 
+
+## What can be done?
+
+- Have meaningful conversations, meaningful relationships with people whose culture is being commodified.
+
+- Not for them, but together with them.
 
 
