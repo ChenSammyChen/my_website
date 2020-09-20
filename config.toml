@@ -111,7 +111,7 @@ disqusShortname = ""
 
     [[params.tiles.showcase]] 
       title = "Who is Sammy"
-      subtitle = "'She'" 
+      subtitle = "Quickly know about 'She'!" 
       image = "pic01.jpg"
       url = "blogs/blog1"
       
