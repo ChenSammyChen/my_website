@@ -97,16 +97,16 @@ disqusShortname = ""
       image = "pic02.jpg"
       url = "blogs/blog6"
 
-    [[params.tiles.showcase]]
+    [[params.tiles.showcase]] 
       title = "Trump's Approval Margins"
       subtitle = "Do Trump's Approval Margins keep changing across recent years?"
-      image = "pic03.png"
+      image = "pic03.jpg"
       url = "blogs/blog7"
 
     [[params.tiles.showcase]]
       title = "Comparison of suicide/homicide rates between races"
       subtitle = "Are there obvious racial differences?"
-      image = "pic04.png"
+      image = "pic04.jpg"
       url = "blogs/blog5"
 
     [[params.tiles.showcase]] 
