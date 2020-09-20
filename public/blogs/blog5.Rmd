@@ -4,7 +4,7 @@ categories:
 - ""
 date: '2020-09-07'
 description: Are there obvious suicide/homicide rate differences between races?
-draft: false
+draft: true
 image: pic04.png
 keywords: ""
 slug: blog5
