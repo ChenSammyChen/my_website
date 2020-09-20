@@ -80,7 +80,10 @@
 
 
 <hr />
-<pre class="r"><code># Replicate Figure 3
+<p>It is unknown how much the difference in excess deaths due to homicide among black men and suicide among white men vary by US state.</p>
+<p>To compare the rates of firearm and non-firearm homicide and suicide in black and white non-Hispanic men by US state and examine their associations with state prevalence of gun ownership.</p>
+<p>#The relationship between the annual rates of firearm homicide and suicide among white men</p>
+<pre class="r"><code># Discover the relationship between tha annual rates of firearm homicide and suicide among white men
 
 library(dplyr)
 library(ggplot2)
@@ -104,9 +107,55 @@ white_firearm_plot &lt;- ggplot(data = white_firearm, aes(x = adjusted.suicide.W
   theme_bw()+
   NULL
 
-ggsave(&quot;white_firearm_plot.jpg&quot;,plot = white_firearm_plot, width = 9, height = 7, path = here::here(&quot;static/img&quot;))
-knitr::include_graphics(here::here(&quot;static/img&quot;, &quot;white_firearm_plot.jpg&quot;))</code></pre>
-<p><img src="C:/Users/sammy/Desktop/applied%20stat%20with%20R/my_website/static/img/white_firearm_plot.jpg" width="100%" style="display: block; margin: auto;" /></p>
+#ggsave(&quot;white_firearm_plot.jpg&quot;,plot = white_firearm_plot, width = 9, height = 7, path = here::here(&quot;static/img&quot;))
+#knitr::include_graphics(here::here(&quot;static/img&quot;, &quot;white_firearm_plot.jpg&quot;))
+
+white_firearm_plot</code></pre>
+<p><img src="/blogs/blog5_files/figure-html/white%20men%20figure-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>From the plot, we can see that firearm homicide and suicide were strongly associated for white men. In terms of the relationship among firearm homicide, suicide, and state gun prevalence, the 5 states with lower rates of both firearm homicide and suicide in white men(Massachusetts, New Jersey, Rhode Island, New York, Connecticut)also were in the lowest category of reported state gun prevalence.</p>
+<p>#The relationship between the annual rates of firearm homicide and suicide among black men</p>
+<pre class="r"><code># Discover the relationship between tha annual rates of firearm homicide and suicide among black men
+
+
+black_firearm_plot &lt;- ggplot(subset(white_firearm, type == &quot;Firearm&quot; &amp; !(ST %in% c(&quot;US&quot;, &quot;DC&quot;))), aes(x = adjusted.suicide.Black, y = adjusted.homicide.Black)) + 
+  geom_point(aes(fill = gun.house.prev.category, size = average.pop.black), col = &quot;black&quot;, pch = 21, alpha = 0.9) +
+  geom_text_repel(aes(label = ST), size = 4, check_overlap = T) +
+  scale_fill_manual(values = c(&quot;#fef0d9&quot;, &quot;#fdcc8a&quot;, &quot;#fc8d59&quot;, &quot;#d7301f&quot;)) +
+  ylab(&quot;Black homicide rate (per 100,000 per year)&quot;) +
+  xlab(&quot;Black suicide rate (per 100,000 per year)&quot;) +
+  scale_y_continuous(limits = c(0, 60)) +
+  scale_x_continuous(limits = c(0, 12)) +
+  theme_bw() +
+  scale_size_area(breaks = c(20000, 100000, 500000, 1400000), 
+                  labels = c(&quot;20k&quot;, &quot;100k&quot;, &quot;500k&quot;, &quot;1.4m&quot;), 
+                  max_size = 15) +
+  guides(fill = guide_legend(title = &quot;Gun ownership&quot;, 
+                             override.aes = list(size = 5), order = 1), 
+         size = guide_legend(title = &quot;Black population&quot;), order = 2) + 
+         geom_text(aes(x = 26, y = 0.5, label = paste0(&quot;Spearman&#39;s rho:0.34&quot;)), check_overlap = TRUE)+
+  theme_bw()+
+  NULL
+ 
+#  geom_point(aes(fill = gun.house.prev.category, size = average.pop.black), col = &quot;black&quot;, pch = 21, alpha = 0.8)+
+#  scale_fill_manual(values = c(&quot;#fef0d9&quot;, &quot;#fdcc8a&quot;, &quot;#fc8d59&quot;, &quot;#d7301f&quot;))+
+#  scale_size_area(breaks = c(20000, 100000, 500000, 1400000), max_size = 14, labels = c(&quot;20k&quot;, &quot;100k&quot;, &quot;500k&quot;, &quot;1.4m&quot;))+
+#  scale_x_continuous(limits = c(0,60))+
+#  scale_y_continuous(limits = c(0,12))+
+#  labs(x = &#39;Black suicide rate (per 100,000 per year)&#39;, y = &#39;Black homicide rate (per 100,000 per year)&#39;)+
+#  guides(fill = guide_legend(title = &#39;Gun ownership&#39;,override.aes = list(size = 5), order = 1),
+#         size = guide_legend(title = &#39;Black population&#39;, order = 0))+
+#  geom_text_repel(aes(label = ST), size = 4.2)+
+#  geom_text(aes(x = 26, y = 0.5, label = paste0(&quot;Spearman&#39;s rho:0.34&quot;)),check_overlap = TRUE)+
+#  theme_bw()+
+#  NULL
+
+#ggsave(&quot;black_firearm_plot.jpg&quot;,plot = black_firearm_plot, width = 9, height = 7, path = here::here(&quot;static/img&quot;))
+#knitr::include_graphics(here::here(&quot;static/img&quot;, &quot;black_firearm_plot.jpg&quot;))
+
+black_firearm_plot</code></pre>
+<p><img src="/blogs/blog5_files/figure-html/black%20men%20figure-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Among black men, firearm homicide and suicide were modestly associated. States with the lowest reported prevalence of guns had the lowest rates of firearm suicide and below-average rates of firearm homicide. Missouri and several rust belt states reported the most firearm homicides among black men but medium levels of gun ownership.</p>
+<p>#Results further explanation</p>
 
                         </div>
                     </section>

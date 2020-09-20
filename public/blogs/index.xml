@@ -17,7 +17,9 @@
       <pubDate>Mon, 07 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>/blogs/blog5/</guid>
-      <description># Replicate Figure 3library(dplyr)library(ggplot2)library(ggrepel)white_firearm &amp;lt;- vroom::vroom(here::here(&amp;quot;data&amp;quot;,&amp;quot;CDC_Males.csv&amp;quot;)) %&amp;gt;%filter(type == &amp;#39;Firearm&amp;#39; &amp;amp; !(ST %in% c(&amp;quot;US&amp;quot;, &amp;quot;DC&amp;quot;, &amp;quot;HI&amp;quot;))) white_firearm_plot &amp;lt;- ggplot(data = white_firearm, aes(x = adjusted.suicide.White, y = adjusted.homicide.White))+geom_point(aes(fill = gun.house.prev.category, size = average.pop.white), col = &amp;quot;black&amp;quot;, pch = 21, alpha = 0.8)+scale_fill_manual(values = c(&amp;quot;#fef0d9&amp;quot;, &amp;quot;#fdcc8a&amp;quot;, &amp;quot;#fc8d59&amp;quot;, &amp;quot;#d7301f&amp;quot;))+scale_size_area(breaks = c(500000, 1500000, 3000000, 7000000), max_size = 14, labels = c(&amp;#39;500k&amp;#39;, &amp;#39;1.5m&amp;#39;, &amp;#39;3m&amp;#39;, &amp;#39;7m&amp;#39;))+scale_x_continuous(limits = c(0,30))+scale_y_continuous(limits = c(0,5))+labs(x = &amp;#39;White suicide rate (per 100,000 per year)&amp;#39;, y = &amp;#39;White homicide rate (per 100,000 per year)&amp;#39;)+guides(fill = guide_legend(title = &amp;#39;Gun ownership&amp;#39;,override.</description>
+      <description>It is unknown how much the difference in excess deaths due to homicide among black men and suicide among white men vary by US state.
+To compare the rates of firearm and non-firearm homicide and suicide in black and white non-Hispanic men by US state and examine their associations with state prevalence of gun ownership.
+#The relationship between the annual rates of firearm homicide and suicide among white men</description>
     </item>
     
     <item>
@@ -37,10 +39,10 @@ The GDP data we will look at is from the United Nations’ National Accounts Mai
       <pubDate>Mon, 07 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>/blogs/blog7/</guid>
-      <description>Trump’s Approval MarginsBy looking at Trump’s Approval Margins over time, we can probably figure out the pattern of his approval rate change.
-Let’s see from the past!
-# Import approval polls dataapproval_polllist &amp;lt;- read_csv(here::here(&amp;#39;data&amp;#39;, &amp;#39;approval_polllist.csv&amp;#39;))# or directly off fivethirtyeight website# approval_polllist &amp;lt;- read_csv(&amp;#39;https://projects.fivethirtyeight.com/trump-approval-data/approval_polllist.csv&amp;#39;)First of all, we glimpse at the data to gain an understanding of the data set.
-#take a look at the original dataglimpse(approval_polllist)## Rows: 14,533## Columns: 22## $ president &amp;lt;chr&amp;gt; &amp;quot;Donald Trump&amp;quot;, &amp;quot;Donald Trump&amp;quot;, &amp;quot;Donald Trump&amp;quot;,.</description>
+      <description>By looking at Trump’s Approval Margins over time, we can probably figure out the pattern of his approval rate change.
+Let’s see from the past and dig as much deeper as we can!
+First, we import the data set. We can also read csv directly from the website. Here we save the csv to local directory for higher speed.
+# Import approval polls dataapproval_polllist &amp;lt;- read_csv(here::here(&amp;#39;data&amp;#39;, &amp;#39;approval_polllist.csv&amp;#39;))# or directly off fivethirtyeight website# approval_polllist &amp;lt;- read_csv(&amp;#39;https://projects.</description>
     </item>
     
     <item>

@@ -46,13 +46,11 @@ library(wbstats)
 
 
 
-
-# Trump's Approval Margins
-
 By looking at Trump's Approval Margins over time, we can probably figure out the pattern of his approval rate change.
 
-Let's see from the past!
+Let's see from the past and dig as much deeper as we can!
 
+First, we import the data set. We can also read csv directly from the website. Here we save the csv to local directory for higher speed.
 ```{r, cache=TRUE}
 # Import approval polls data
 approval_polllist <- read_csv(here::here('data', 'approval_polllist.csv'))
@@ -61,13 +59,15 @@ approval_polllist <- read_csv(here::here('data', 'approval_polllist.csv'))
 # approval_polllist <- read_csv('https://projects.fivethirtyeight.com/trump-approval-data/approval_polllist.csv')
 
 ```
-First of all, we glimpse at the data to gain an understanding of the data set.
+Then, we glimpse at the data to gain a rough understanding of the data set.
 ```{r, original data}
 #take a look at the original data
 glimpse(approval_polllist)
 #found dates in character form
 ```
-We found that the dates are in the form of "character", so we change the form using the "lubridate" dataset. Then, we check the revised data again.
+Opps! Look what we have found! The dates are in the wrong data type. They should be in "date" instead of "character", so we change the form using the "lubridate" dataset. 
+
+Then, we double check the revised data to make sure we have all variables correctly saved.
 
 ```{r, loading libraries}
 #explicitly load lubridate library
@@ -84,13 +84,13 @@ approval_polllist$timestamp <- parse_date_time(approval_polllist$timestamp, orde
 glimpse(approval_polllist) 
 ```
 
-## Create a plot
+# Create "average net approval rate" plot with confidence intervals
 
-First, calculate the average net approval rate (approve- disapprove) for each week since he got into office. I want you plot the net approval, along with its 95% confidence interval. There are various dates given for each poll, please use `enddate`, i.e., the date the poll ended.
+We calculated the average net approval rate (approve- disapprove) for each week since he got into office. Then we plotted the net approval, along with its 95% confidence interval. We found that there are various dates given for each poll, so we use `enddate`, i.e., the date the poll ended to label and distinguish between the polls.
 
-we selected the required variables and calculated the average net approval rate by week from 2017 to 2020 and its 95% confidence interval using mathematical formula. 
+Let's get doing! We selected the required variables and calculated the average net approval rate by week from 2017 to 2020 and its 95% confidence interval using mathematical formula. 
 
-Then we generate the weekly average net approval rate plot and save it in the right proportion.
+we generated the weekly average net approval rate plot.
 ```{r trump_margins, out.width="100%"}
 avg_per_week <- approval_polllist %>% 
 #We want the figures for those really did vote
@@ -139,11 +139,13 @@ weekly_avg_poll
 
 ```
 
-## Compare Confidence Intervals
+# Compare Confidence Intervals and explain what was going
 
-Compare the confidence intervals for `week 15` (6-12 April 2020) and `week 34` (17-23 August 2020). Can you explain what's going on? One paragraph would be enough.
+Here, we want to compare the confidence intervals for `week 15` (6-12 April 2020) and `week 34` (17-23 August 2020). 
 
-We can see from the table below that the confidence interval at 'week 34' is 4.85 larger than 'week 15'.This is because the confidence interval lower limit in 'week 34' is 5.16 lower than 'week 15', although their upper limits are quite close. This can be traced back to the difference between the standard deviation figures(delta = 8.10 - 3.12 =  4.98). However, there exists inaccuracy, especially when the count for 'week 34' is only 22 and this strengens the result of a bigger standard error. This means that the interval that would capture the true average net approval rate of Trump is wider in 'week 34', in other word, voters have hugely deviated opinions regarding whether they want to approve Trump in 'week 34'. The high variability in week 34 may be due to changes in coronavirus crisis. 
+We can see from the table below that the confidence interval at 'week 34' is 4.85pp larger than 'week 15'.This is because the confidence interval lower limit in 'week 34' is 5.16pp lower than 'week 15', although their upper limits are quite close. In essence, the CI in week 15 is much narrower than the CI in week 34, signalling more ambiguous data in week 34 than 15. 
+
+This can be traced back to the difference between the standard deviation figures (delta = 8.10 - 3.12 =  4.98). However, there exists inaccuracy, especially as the count for 'week 34' is only 22, resulting in a bigger standard error. This means that the interval that would capture the true average net approval rate of Trump is wider in 'week 34', in other words, voters have hugely deviated opinions regarding whether they approve Trump in 'week 34'. In week 15, voters opinions are clearer and more uniform. The higher variability in opinions and the larger CIs starting around week 26 may be due to certain events such as a public speech by Trump or also changes in of the Coronavirus crisis influencing voters opinions and perspectives. 
 
 
 
