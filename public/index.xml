@@ -19,7 +19,29 @@
       <guid>/blogs/blog5/</guid>
       <description>It is unknown how much the difference in excess deaths due to homicide among black men and suicide among white men vary by US state.
 To compare the rates of firearm and non-firearm homicide and suicide in black and white non-Hispanic men by US state and examine their associations with state prevalence of gun ownership.
-#The relationship between the annual rates of firearm homicide and suicide among white men</description>
+The relationship between the annual rates of firearm homicide and suicide among white men# Discover the relationship between tha annual rates of firearm homicide and suicide among white menlibrary(dplyr)library(ggplot2)library(ggrepel)white_firearm &amp;lt;- vroom::vroom(here::here(&amp;quot;data&amp;quot;,&amp;quot;CDC_Males.</description>
+    </item>
+    
+    <item>
+      <title>Comparison of suicide/homicide rates between races</title>
+      <link>/blogs/blog5/</link>
+      <pubDate>Mon, 07 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/blogs/blog5/</guid>
+      <description>It is unknown how much the difference in excess deaths due to homicide among black men and suicide among white men vary by US state.
+To compare the rates of firearm and non-firearm homicide and suicide in black and white non-Hispanic men by US state and examine their associations with state prevalence of gun ownership.
+The relationship between the annual rates of firearm homicide and suicide among white men # Discover the relationship between tha annual rates of firearm homicide and suicide among white men library(dplyr) library(ggplot2) library(ggrepel) white_firearm &amp;lt;- vroom::vroom(here::here(&amp;#34;data&amp;#34;,&amp;#34;CDC_Males.</description>
+    </item>
+    
+    <item>
+      <title>Comparison of suicide/homicide rates between races</title>
+      <link>/blogs/blog5/</link>
+      <pubDate>Mon, 07 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/blogs/blog5/</guid>
+      <description>It is unknown how much the difference in excess deaths due to homicide among black men and suicide among white men vary by US state.
+To compare the rates of firearm and non-firearm homicide and suicide in black and white non-Hispanic men by US state and examine their associations with state prevalence of gun ownership.
+The relationship between the annual rates of firearm homicide and suicide among white men # Discover the relationship between tha annual rates of firearm homicide and suicide among white men library(dplyr) library(ggplot2) library(ggrepel) white_firearm &amp;lt;- vroom::vroom(here::here(&amp;#34;data&amp;#34;,&amp;#34;CDC_Males.</description>
     </item>
     
     <item>
