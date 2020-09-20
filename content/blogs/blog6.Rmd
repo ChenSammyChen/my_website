@@ -106,6 +106,7 @@ glimpse(tidy_GDP_data)
 country_list <- c("United States","India", "Germany")
 selected_indicators <- c("Gross capital formation", "Exports", "Government expenditure", "Household expenditure", "Imports")
 ```
+
 Step 2:  Replicate the two given GDP Plots
 Step 2-1:  Replicate the "GDP components" plot
 
