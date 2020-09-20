@@ -92,28 +92,31 @@ disqusShortname = ""
     # Display your showcases here.
     
     [[params.tiles.showcase]]
-      title = "GDP component and proportion comparison"
-      subtitle = "Are GDP components varying over time and among countries?"
-      image = "pic02.jpg"
-      url = "blogs/blog6"
+      title = "Who is Sammy"
+      subtitle = "Quickly know about 'She'!" 
+      image = "pic01.jpg"
+      url = "blogs/blog1"
+
 
     [[params.tiles.showcase]] 
-      title = "Trump's Approval Margins"
-      subtitle = "Do Trump's Approval Margins keep changing across recent years?"
-      image = "pic03.jpg"
-      url = "blogs/blog7"
-
-    [[params.tiles.showcase]]
       title = "Cultural Appropriation-Suicide/homicide rates between races"
       subtitle = "Embrace racial differences with cultural appreciation"
       image = "pic04.jpg"
       url = "blogs/blog5"
 
+
+    [[params.tiles.showcase]]
+      title = "Trump's Approval Margins"
+      subtitle = "Do Trump's Approval Margins keep changing across recent years?"
+      image = "pic03.jpg"
+      url = "blogs/blog7"
+
+
     [[params.tiles.showcase]] 
-      title = "Who is Sammy"
-      subtitle = "Quickly know about 'She'!" 
-      image = "pic01.jpg"
-      url = "blogs/blog1"
+      title = "GDP component and proportion comparison"
+      subtitle = "Are GDP components varying over time and among countries?"
+      image = "pic02.jpg"
+      url = "blogs/blog6"
       
 #。    [[params.tiles.showcase]]
 #      title = "Consequat"
