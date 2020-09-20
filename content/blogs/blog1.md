@@ -15,7 +15,7 @@ title: Sammy Chen
 
 ![LOVELY BUDDHA](https://raw.githubusercontent.com/ChenSammyChen/markdown-image/master/image/budda.jpg)
 
-Can you see his tips? So cute!
+Can you see his lips? So cute!
 
 
 
