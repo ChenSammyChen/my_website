@@ -76,8 +76,8 @@ white_firearm_plot <- ggplot(data = white_firearm, aes(x = adjusted.suicide.Whit
   theme_bw()+
   NULL
 
-ggsave("white_firearm_plot.jpg",plot = white_firearm_plot, width = 9, height = 7, path = here::here("static/img"))
-knitr::include_graphics(here::here("static/img", "white_firearm_plot.jpg"))
+#ggsave("white_firearm_plot.jpg",plot = white_firearm_plot, width = 9, height = 7, path = here::here("static/img"))
+#knitr::include_graphics(here::here("static/img", "white_firearm_plot.jpg"))
 
   
 ```
@@ -106,13 +106,13 @@ black_firearm_plot <- ggplot(subset(white_firearm, type == "Firearm" & !(ST %in%
   guides(fill = guide_legend(title = "Gun ownership", 
                              override.aes = list(size = 5), order = 1), 
          size = guide_legend(title = "Black population"), order = 2) + 
-         geom_text(aes(x = 26, y = 0.5, label = paste0("Spearman's rho:0.34")), check_overlap = TRUE)+
+         geom_text(aes(x = 26, y = 0.5, label = paste0("Spearman's rho:0.34")), check_overlap = TRUE)+ 
   theme_bw()+
   NULL
  
 
-ggsave("black_firearm_plot.jpg",plot = black_firearm_plot, width = 9, height = 7, path = here::here("static/img"))
-knitr::include_graphics(here::here("static/img", "black_firearm_plot.jpg"))
+#ggsave("black_firearm_plot.jpg",plot = black_firearm_plot, width = 9, height = 7, path = here::here("static/img"))
+#knitr::include_graphics(here::here("static/img", "black_firearm_plot.jpg"))
 
 ```
 

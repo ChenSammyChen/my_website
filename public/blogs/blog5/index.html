@@ -76,66 +76,76 @@
                             
                                 <span class="image main"><img src="/img/blogs/pic04.jpg" alt="" /></span>
                             
-                            <hr>
+                            
+
+
+<hr />
 <p>It is unknown how much the difference in excess deaths due to homicide among black men and suicide among white men vary by US state.</p>
 <p>To compare the rates of firearm and non-firearm homicide and suicide in black and white non-Hispanic men by US state and examine their associations with state prevalence of gun ownership.</p>
-<h1 id="the-relationship-between-the-annual-rates-of-firearm-homicide-and-suicide-among-white-men">The relationship between the annual rates of firearm homicide and suicide among white men</h1>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># Discover the relationship between tha annual rates of firearm homicide and suicide among white men</span>
+<div id="the-relationship-between-the-annual-rates-of-firearm-homicide-and-suicide-among-white-men" class="section level1">
+<h1>The relationship between the annual rates of firearm homicide and suicide among white men</h1>
+<pre class="r"><code># Discover the relationship between tha annual rates of firearm homicide and suicide among white men
 
-<span style="color:#a6e22e">library</span>(dplyr)
-<span style="color:#a6e22e">library</span>(ggplot2)
-<span style="color:#a6e22e">library</span>(ggrepel)
+library(dplyr)
+library(ggplot2)
+library(ggrepel)
 
-white_firearm <span style="color:#f92672">&lt;-</span> vroom<span style="color:#f92672">::</span><span style="color:#a6e22e">vroom</span>(here<span style="color:#f92672">::</span><span style="color:#a6e22e">here</span>(<span style="color:#e6db74">&#34;data&#34;</span>,<span style="color:#e6db74">&#34;CDC_Males.csv&#34;</span>)) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">filter</span>(type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;Firearm&#39;</span> <span style="color:#f92672">&amp;</span> <span style="color:#f92672">!</span>(ST <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;US&#34;</span>, <span style="color:#e6db74">&#34;DC&#34;</span>, <span style="color:#e6db74">&#34;HI&#34;</span>))) 
+white_firearm &lt;- vroom::vroom(here::here(&quot;data&quot;,&quot;CDC_Males.csv&quot;)) %&gt;%
+  filter(type == &#39;Firearm&#39; &amp; !(ST %in% c(&quot;US&quot;, &quot;DC&quot;, &quot;HI&quot;))) 
 
 
-white_firearm_plot <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(data <span style="color:#f92672">=</span> white_firearm, <span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> adjusted.suicide.White, y <span style="color:#f92672">=</span> adjusted.homicide.White))<span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_point</span>(<span style="color:#a6e22e">aes</span>(fill <span style="color:#f92672">=</span> gun.house.prev.category, size <span style="color:#f92672">=</span> average.pop.white), col <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;black&#34;</span>, pch <span style="color:#f92672">=</span> <span style="color:#ae81ff">21</span>, alpha <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.8</span>)<span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;#fef0d9&#34;</span>, <span style="color:#e6db74">&#34;#fdcc8a&#34;</span>, <span style="color:#e6db74">&#34;#fc8d59&#34;</span>, <span style="color:#e6db74">&#34;#d7301f&#34;</span>))<span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_size_area</span>(breaks <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">500000</span>, <span style="color:#ae81ff">1500000</span>, <span style="color:#ae81ff">3000000</span>, <span style="color:#ae81ff">7000000</span>), max_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">14</span>, labels <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#39;500k&#39;</span>, <span style="color:#e6db74">&#39;1.5m&#39;</span>, <span style="color:#e6db74">&#39;3m&#39;</span>, <span style="color:#e6db74">&#39;7m&#39;</span>))<span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_x_continuous</span>(limits <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">30</span>))<span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_y_continuous</span>(limits <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">5</span>))<span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">labs</span>(x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;White suicide rate (per 100,000 per year)&#39;</span>, y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;White homicide rate (per 100,000 per year)&#39;</span>)<span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">guides</span>(fill <span style="color:#f92672">=</span> <span style="color:#a6e22e">guide_legend</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Gun ownership&#39;</span>,override.aes <span style="color:#f92672">=</span> <span style="color:#a6e22e">list</span>(size <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>), order <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>),
-         size <span style="color:#f92672">=</span> <span style="color:#a6e22e">guide_legend</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;White population&#39;</span>, order <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>))<span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_text_repel</span>(<span style="color:#a6e22e">aes</span>(label <span style="color:#f92672">=</span> ST), size <span style="color:#f92672">=</span> <span style="color:#ae81ff">4.2</span>)<span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_text</span>(<span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> <span style="color:#ae81ff">26</span>, y <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.5</span>, label <span style="color:#f92672">=</span> <span style="color:#a6e22e">paste0</span>(<span style="color:#e6db74">&#34;Spearman&#39;s rho:0.74&#34;</span>)),check_overlap <span style="color:#f92672">=</span> <span style="color:#66d9ef">TRUE</span>)<span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">theme_bw</span>()<span style="color:#f92672">+</span>
-  <span style="color:#66d9ef">NULL</span>
+white_firearm_plot &lt;- ggplot(data = white_firearm, aes(x = adjusted.suicide.White, y = adjusted.homicide.White))+
+  geom_point(aes(fill = gun.house.prev.category, size = average.pop.white), col = &quot;black&quot;, pch = 21, alpha = 0.8)+
+  scale_fill_manual(values = c(&quot;#fef0d9&quot;, &quot;#fdcc8a&quot;, &quot;#fc8d59&quot;, &quot;#d7301f&quot;))+
+  scale_size_area(breaks = c(500000, 1500000, 3000000, 7000000), max_size = 14, labels = c(&#39;500k&#39;, &#39;1.5m&#39;, &#39;3m&#39;, &#39;7m&#39;))+
+  scale_x_continuous(limits = c(0,30))+
+  scale_y_continuous(limits = c(0,5))+
+  labs(x = &#39;White suicide rate (per 100,000 per year)&#39;, y = &#39;White homicide rate (per 100,000 per year)&#39;)+
+  guides(fill = guide_legend(title = &#39;Gun ownership&#39;,override.aes = list(size = 5), order = 1),
+         size = guide_legend(title = &#39;White population&#39;, order = 0))+
+  geom_text_repel(aes(label = ST), size = 4.2)+
+  geom_text(aes(x = 26, y = 0.5, label = paste0(&quot;Spearman&#39;s rho:0.74&quot;)),check_overlap = TRUE)+
+  theme_bw()+
+  NULL
 
-<span style="color:#a6e22e">ggsave</span>(<span style="color:#e6db74">&#34;white_firearm_plot.jpg&#34;</span>,plot <span style="color:#f92672">=</span> white_firearm_plot, width <span style="color:#f92672">=</span> <span style="color:#ae81ff">9</span>, height <span style="color:#f92672">=</span> <span style="color:#ae81ff">7</span>, path <span style="color:#f92672">=</span> here<span style="color:#f92672">::</span><span style="color:#a6e22e">here</span>(<span style="color:#e6db74">&#34;static/img&#34;</span>))
-knitr<span style="color:#f92672">::</span><span style="color:#a6e22e">include_graphics</span>(here<span style="color:#f92672">::</span><span style="color:#a6e22e">here</span>(<span style="color:#e6db74">&#34;static/img&#34;</span>, <span style="color:#e6db74">&#34;white_firearm_plot.jpg&#34;</span>))
-</code></pre></div><p><!-- raw HTML omitted -->
-![white_firearm_plot](C:/Users/sammy/Desktop/applied stat with R/my_website/public/img/white_firearm_plot.jpg)</p>
+#ggsave(&quot;white_firearm_plot.jpg&quot;,plot = white_firearm_plot, width = 9, height = 7, path = here::here(&quot;static/img&quot;))
+#knitr::include_graphics(here::here(&quot;static/img&quot;, &quot;white_firearm_plot.jpg&quot;))</code></pre>
+<div class="figure">
+<img src="C:/Users/sammy/Desktop/applied%20stat%20with%20R/my_website/public/img/white_firearm_plot.jpg" alt="" />
+<p class="caption">white_firearm_plot</p>
+</div>
 <p>From the plot, we can see that firearm homicide and suicide were strongly associated for white men. In terms of the relationship among firearm homicide, suicide, and state gun prevalence, the 5 states with lower rates of both firearm homicide and suicide in white men(Massachusetts, New Jersey, Rhode Island, New York, Connecticut)also were in the lowest category of reported state gun prevalence.</p>
-<h1 id="the-relationship-between-the-annual-rates-of-firearm-homicide-and-suicide-among-black-men">The relationship between the annual rates of firearm homicide and suicide among black men</h1>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># Discover the relationship between tha annual rates of firearm homicide and suicide among black men</span>
+</div>
+<div id="the-relationship-between-the-annual-rates-of-firearm-homicide-and-suicide-among-black-men" class="section level1">
+<h1>The relationship between the annual rates of firearm homicide and suicide among black men</h1>
+<pre class="r"><code># Discover the relationship between tha annual rates of firearm homicide and suicide among black men
 
-black_firearm_plot <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">subset</span>(white_firearm, type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;Firearm&#34;</span> <span style="color:#f92672">&amp;</span> <span style="color:#f92672">!</span>(ST <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;US&#34;</span>, <span style="color:#e6db74">&#34;DC&#34;</span>))), <span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> adjusted.suicide.Black, y <span style="color:#f92672">=</span> adjusted.homicide.Black)) <span style="color:#f92672">+</span> 
-  <span style="color:#a6e22e">geom_point</span>(<span style="color:#a6e22e">aes</span>(fill <span style="color:#f92672">=</span> gun.house.prev.category, size <span style="color:#f92672">=</span> average.pop.black), col <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;black&#34;</span>, pch <span style="color:#f92672">=</span> <span style="color:#ae81ff">21</span>, alpha <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.9</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_text_repel</span>(<span style="color:#a6e22e">aes</span>(label <span style="color:#f92672">=</span> ST), size <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>, check_overlap <span style="color:#f92672">=</span> T) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;#fef0d9&#34;</span>, <span style="color:#e6db74">&#34;#fdcc8a&#34;</span>, <span style="color:#e6db74">&#34;#fc8d59&#34;</span>, <span style="color:#e6db74">&#34;#d7301f&#34;</span>)) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">labs</span>(x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Black suicide rate (per 100,000 per year)&#39;</span>, y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Black homicide rate (per 100,000 per year)&#39;</span>)<span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_y_continuous</span>(limits <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">60</span>)) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_x_continuous</span>(limits <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">12</span>)) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">theme_bw</span>() <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_size_area</span>(breaks <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">20000</span>, <span style="color:#ae81ff">100000</span>, <span style="color:#ae81ff">500000</span>, <span style="color:#ae81ff">1400000</span>), 
-                  labels <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;20k&#34;</span>, <span style="color:#e6db74">&#34;100k&#34;</span>, <span style="color:#e6db74">&#34;500k&#34;</span>, <span style="color:#e6db74">&#34;1.4m&#34;</span>), 
-                  max_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">15</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">guides</span>(fill <span style="color:#f92672">=</span> <span style="color:#a6e22e">guide_legend</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Gun ownership&#34;</span>, 
-                             override.aes <span style="color:#f92672">=</span> <span style="color:#a6e22e">list</span>(size <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>), order <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>), 
-         size <span style="color:#f92672">=</span> <span style="color:#a6e22e">guide_legend</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Black population&#34;</span>), order <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> 
-         <span style="color:#a6e22e">geom_text</span>(<span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> <span style="color:#ae81ff">26</span>, y <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.5</span>, label <span style="color:#f92672">=</span> <span style="color:#a6e22e">paste0</span>(<span style="color:#e6db74">&#34;Spearman&#39;s rho:0.34&#34;</span>)), check_overlap <span style="color:#f92672">=</span> <span style="color:#66d9ef">TRUE</span>)<span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">theme_bw</span>()<span style="color:#f92672">+</span>
-  <span style="color:#66d9ef">NULL</span>
+black_firearm_plot &lt;- ggplot(subset(white_firearm, type == &quot;Firearm&quot; &amp; !(ST %in% c(&quot;US&quot;, &quot;DC&quot;))), aes(x = adjusted.suicide.Black, y = adjusted.homicide.Black)) + 
+  geom_point(aes(fill = gun.house.prev.category, size = average.pop.black), col = &quot;black&quot;, pch = 21, alpha = 0.9) +
+  geom_text_repel(aes(label = ST), size = 4, check_overlap = T) +
+  scale_fill_manual(values = c(&quot;#fef0d9&quot;, &quot;#fdcc8a&quot;, &quot;#fc8d59&quot;, &quot;#d7301f&quot;)) +
+  labs(x = &#39;Black suicide rate (per 100,000 per year)&#39;, y = &#39;Black homicide rate (per 100,000 per year)&#39;)+
+  scale_y_continuous(limits = c(0, 60)) +
+  scale_x_continuous(limits = c(0, 12)) +
+  theme_bw() +
+  scale_size_area(breaks = c(20000, 100000, 500000, 1400000), 
+                  labels = c(&quot;20k&quot;, &quot;100k&quot;, &quot;500k&quot;, &quot;1.4m&quot;), 
+                  max_size = 15) +
+  guides(fill = guide_legend(title = &quot;Gun ownership&quot;, 
+                             override.aes = list(size = 5), order = 1), 
+         size = guide_legend(title = &quot;Black population&quot;), order = 2) + 
+         geom_text(aes(x = 26, y = 0.5, label = paste0(&quot;Spearman&#39;s rho:0.34&quot;)), check_overlap = TRUE)+ 
+  theme_bw()+
+  NULL
  
 
-<span style="color:#a6e22e">ggsave</span>(<span style="color:#e6db74">&#34;black_firearm_plot.jpg&#34;</span>,plot <span style="color:#f92672">=</span> black_firearm_plot, width <span style="color:#f92672">=</span> <span style="color:#ae81ff">9</span>, height <span style="color:#f92672">=</span> <span style="color:#ae81ff">7</span>, path <span style="color:#f92672">=</span> here<span style="color:#f92672">::</span><span style="color:#a6e22e">here</span>(<span style="color:#e6db74">&#34;static/img&#34;</span>))
-knitr<span style="color:#f92672">::</span><span style="color:#a6e22e">include_graphics</span>(here<span style="color:#f92672">::</span><span style="color:#a6e22e">here</span>(<span style="color:#e6db74">&#34;static/img&#34;</span>, <span style="color:#e6db74">&#34;black_firearm_plot.jpg&#34;</span>))
-</code></pre></div><p><!-- raw HTML omitted --></p>
+#ggsave(&quot;black_firearm_plot.jpg&quot;,plot = black_firearm_plot, width = 9, height = 7, path = here::here(&quot;static/img&quot;))
+#knitr::include_graphics(here::here(&quot;static/img&quot;, &quot;black_firearm_plot.jpg&quot;))</code></pre>
 <p>Among black men, firearm homicide and suicide were modestly associated. States with the lowest reported prevalence of guns had the lowest rates of firearm suicide and below-average rates of firearm homicide. Missouri and several rust belt states reported the most firearm homicides among black men but medium levels of gun ownership.</p>
-<h1 id="results-further-explanation">Results further explanation</h1>
+</div>
+<div id="results-further-explanation" class="section level1">
+<h1>Results further explanation</h1>
+</div>
 
                         </div>
                     </section>
